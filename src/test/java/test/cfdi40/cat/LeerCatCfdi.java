@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -123,7 +125,10 @@ public class LeerCatCfdi {
         FileInputStream fis = null;
         DecimalFormat df = new DecimalFormat("###############");
         DecimalFormat df2 = new DecimalFormat("00");
-        int[] index = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] index = {4, 4, 4, 4, 4, 5, 6, 4, 4, 4,
+            5, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+            4, 4, 4, 4, 4, 4, 4, 4};
+        StringBuilder sb = new StringBuilder();
         try {
             File myFile = new File("/Users/avecias/Downloads/catCFDI_V_4_29062023.xls");
             fis = new FileInputStream(myFile);
@@ -131,29 +136,38 @@ public class LeerCatCfdi {
             // sacar los titulos de cada hoja
             System.out.println(workbook.getActiveSheetIndex());
             Iterator<Sheet> sheetIterator = workbook.sheetIterator();
-            // primera hoja
-            HSSFSheet sheet = workbook.getSheetAt(6);
-            Iterator<Row> rowIterator = sheet.iterator();
-            // offset para filas que no nos interesa
-            Row row = null;
-            if (sheet.getPhysicalNumberOfRows() >= 4) {
-                for (int i = 0; i < 4; i++) {
-                    rowIterator.next();
+            int contSheet = 0;
+            while (sheetIterator.hasNext()) {
+                Sheet sheet = sheetIterator.next();
+                System.out.println("index " + contSheet + ", valor " + index[contSheet]);
+                Iterator<Row> rowIterator = sheet.iterator();
+                // offset para filas que no nos interesa
+                System.out.println("numero de filas: " + sheet.getPhysicalNumberOfRows() + ", de la hoja " + sheet.getSheetName());
+                sb.append(sheet.getSheetName()).append("\n");
+                int contRow = 0;
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+                    contRow++;
+                    if (contRow <= index[contSheet]) {
+                        continue;
+                    }
+                    Iterator<Cell> cellIterator = row.cellIterator();
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        String value = cadena(cell, df2);
+                        value = StringUtils.stripAccents(value);
+                        value = CaseUtils.toCamelCase(value, false, ' ');
+                        System.out.print(value + ",");
+                        sb.append("private final String ").append(value).append(";\n");
+                    }
+                    System.out.println();
+                    break;
+                    //
                 }
-            }
-            while (rowIterator.hasNext()) {
-                row = rowIterator.next();
-                //
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    String value = cadena(cell, df2);
-                    System.out.print(value + ",");
-                }
-                System.out.println();
-                //
+                contSheet++;
             }
             // fin de la lectura
+            System.out.println(sb.toString());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(LeerCatCfdi.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
