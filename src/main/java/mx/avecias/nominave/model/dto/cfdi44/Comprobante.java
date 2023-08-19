@@ -23,6 +23,23 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class Comprobante implements Serializable {
 
+    /*@Version
+    @Serie
+    @Folio
+    @Fecha
+    @FormaPago
+    @NoCertificado
+    @CondicionesDePago
+    @SubTotal
+    @Descuento
+    @Moneda
+    @TipoCambio
+    @Total
+    @TipoDeComprobante
+    @Exportacion
+    @MetodoPago
+    @LugarExpedicion
+    @Confirmacion*/
     private String version;
     private String serie;
     private String folio;

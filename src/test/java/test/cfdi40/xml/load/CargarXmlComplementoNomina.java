@@ -6,22 +6,21 @@ package test.cfdi40.xml.load;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import mx.avecias.nominave.model.dto.cfdi44.Comprobante;
+import mx.avecias.nominave.model.dto.cfdi44.FormaPago;
 import mx.avecias.nominave.model.enums.DateEnum;
+import mx.avecias.nominave.model.util.Converter;
 import org.apache.commons.io.FileUtils;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -35,13 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class CargarXmlComplementoNomina {
 
-    private static Integer folioFactura = 1;
-    private static Integer folioDevolucion = 1;
-    private static Integer folioTraslado = 1;
-    private static Integer folioCredito = 1;
-    private static Integer folioNotaCredito = 1;
-
-    //Cfdi:
+    //Cfdi:Complemento:
     private static String getUUID(Document document) {
         String uuid = "";
         NodeList listTimbreConceptos = document.getElementsByTagName("tfd:TimbreFiscalDigital");
@@ -59,20 +52,7 @@ public class CargarXmlComplementoNomina {
     //Cfdi:
     public static Comprobante getDatosGenerales(Element comprobanteElement) throws ParseException {
         Comprobante comprobante = new Comprobante();
-        SimpleDateFormat sdf = new SimpleDateFormat(DateEnum.ISO_8601DT.toString());
-        comprobante.setVersion(comprobanteElement.getAttribute("Version"));
-        comprobante.setSerie(comprobanteElement.getAttribute("Serie"));
-        comprobante.setFolio(comprobanteElement.getAttribute("Folio"));
-        comprobante.setFecha(sdf.parse(comprobanteElement.getAttribute("Fecha")));
-        comprobanteElement.getAttribute("FormaPago");
-        comprobanteElement.getAttribute("MetodoPago");
-        comprobanteElement.getAttribute("CondicionesDePago");
-        comprobanteElement.getAttribute("SubTotal");
-        comprobanteElement.getAttribute("Descuento");
-        comprobanteElement.getAttribute("Moneda");
-        comprobanteElement.getAttribute("Total");
-        comprobanteElement.getAttribute("TipoDeComprobante");
-        comprobanteElement.getAttribute("LugarExpedicion");
+        
         return comprobante;
     }
 
@@ -263,78 +243,27 @@ public class CargarXmlComplementoNomina {
             String[] extensions = {"xml"}; // archivos con extencion xml
             // Coleccion de archivos de xml
             Collection<File> files = FileUtils.listFiles(root, extensions, true);
-            // 
+            // creamos el objecto convertidor 
+            Converter converter = new Converter();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             for (File file : files) {
                 System.out.println("archivo: " + file.getName());
-                // comprobante nulo
-                Comprobante comprobante = null;
                 // parse del archivo
                 Document document = builder.parse(file);
+                // normalizar en objecto document
                 document.getDocumentElement().normalize();
-                // obtenemos comprobante
-                NodeList listComprobante = document.getElementsByTagName("cfdi:Comprobante");
-                Element comprobanteElement = null;
-                for (int i = 0; i < listComprobante.getLength(); i++) {// [cfdi:Comprobante]
-                    Node comprobanteNode = listComprobante.item(i);
-                    if (comprobanteNode.getNodeType() == Node.ELEMENT_NODE) {
-                        comprobanteElement = (Element) comprobanteNode;
-                    }
-                }
-                //
-                if (comprobanteElement != null) {
-                    if (comprobanteElement.getAttribute("TipoDeComprobante").contains("N")) {
-                        // datos generales                        
-                        comprobante = getDatosGenerales(comprobanteElement);
-                        // datos cfdi relacionados                        
-                        getDatosRelacionados(comprobanteElement);
-                        // datos emisor                       
-                        getDatosEmisor();
-                        // datos receptor
-                        NodeList listReceptor = document.getElementsByTagName("cfdi:Receptor");
-                        for (int j = 0; j < listReceptor.getLength(); j++) {
-                            Node receptor = listReceptor.item(j);
-
-                            if (receptor.getNodeType() == Node.ELEMENT_NODE) {
-                                Element receptorElement = (Element) receptor;
-                                // datos receptor
-                                getDatosReceptor(receptorElement);
-                            }
-                        }
-                        // datos conceptos
-                        NodeList listConceptos = comprobanteElement.getElementsByTagName("cfdi:Conceptos");
-                        for (int j = 0; j < listConceptos.getLength(); j++) {
-                            Node conceptos = listConceptos.item(j);
-
-                            if (conceptos.getNodeType() == Node.ELEMENT_NODE) {
-                                Element conceptosElement = (Element) conceptos;
-
-                                NodeList listConcepto = conceptosElement.getElementsByTagName("cfdi:Concepto");
-                                for (int k = 0; k < listConcepto.getLength(); k++) {
-                                    Node concepto = listConcepto.item(k);
-                                    //
-                                    if (concepto.getNodeType() == Node.ELEMENT_NODE) {
-                                        Element conceptoElement = (Element) concepto;
-                                        //Conceptos                                        
-                                        getDatosConceptos(conceptoElement, k);
-                                    }
-
-                                }//Fin For [cfdi:Concepto]
-                            }
-                        }//Fin FOR [cfdi:Conceptos]       
-                        getDatosAddenda(comprobanteElement);
-                    }
-                    System.out.println(comprobante);
-                }
-            }// Fil For [cfdi:Comprobante]
+                // convertidor
+                Comprobante comprobante = converter.xml2CfdiNomina(document);
+                System.out.println(comprobante);
+            }
             System.out.println("comprobante ");
         } catch (FileNotFoundException ex) {
             System.out.println("Error, " + ex);
         } catch (IOException | SAXException | ParserConfigurationException ex) {
             System.out.println("Error, " + ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(CargarXmlComplementoNomina.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ParseException ex) {
+//            Logger.getLogger(CargarXmlComplementoNomina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
