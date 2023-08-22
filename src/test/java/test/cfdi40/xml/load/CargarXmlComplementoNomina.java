@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,8 +16,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import mx.avecias.nominave.model.dto.cfdi44.Comprobante;
-import mx.avecias.nominave.model.dto.cfdi44.FormaPago;
-import mx.avecias.nominave.model.enums.DateEnum;
 import mx.avecias.nominave.model.util.Converter;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
@@ -47,29 +44,6 @@ public class CargarXmlComplementoNomina {
             }
         }// Fin For [tfd:TimbreFiscalDigital]
         return uuid;
-    }
-
-    //Cfdi:
-    public static Comprobante getDatosGenerales(Element comprobanteElement) throws ParseException {
-        Comprobante comprobante = new Comprobante();
-        
-        return comprobante;
-    }
-
-    //Cfdi:
-    public static void getDatosRelacionados(Element comprobanteElement) {
-        comprobanteElement.getAttribute("Serie");
-        comprobanteElement.getAttribute("Folio");
-    }
-
-    //Cfdi:
-    public static StringBuilder getDatosEmisor() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n#\n#--EMISOR EDITORIAL TRILLAS S.A DE C.V.\n#\n"
-                + "rfcEmisor= ETR820329K89\n"
-                + "nombre=EDITORIAL TRILLAS,S.A.DE C.V.\n"
-                + "regimenFiscal=601");
-        return sb;
     }
 
     //Cfdi:
@@ -262,8 +236,8 @@ public class CargarXmlComplementoNomina {
             System.out.println("Error, " + ex);
         } catch (IOException | SAXException | ParserConfigurationException ex) {
             System.out.println("Error, " + ex);
-//        } catch (ParseException ex) {
-//            Logger.getLogger(CargarXmlComplementoNomina.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CargarXmlComplementoNomina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

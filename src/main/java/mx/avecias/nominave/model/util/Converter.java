@@ -4,8 +4,11 @@
  */
 package mx.avecias.nominave.model.util;
 
+import java.text.ParseException;
 import mx.avecias.nominave.model.dto.cfdi44.Comprobante;
 import mx.avecias.nominave.model.dto.cfdi44.Emisor;
+import mx.avecias.nominave.model.dto.cfdi44.Receptor;
+import mx.avecias.nominave.model.dto.cfdi44.cat.RegimenFiscal;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,13 +23,12 @@ public class Converter {
 
     private final CfdiFormat cfdiFormat = new CfdiFormat();
 
-    private Comprobante getGeneral(Element comprobanteElement) {
+    private Comprobante getGeneral(Element comprobanteElement) throws ParseException {
         Comprobante comprobante = new Comprobante();
-        // SimpleDateFormat sdf = new SimpleDateFormat(DateEnum.ISO_8601DT.toString());
         comprobante.setVersion(comprobanteElement.getAttribute("Version"));
         comprobante.setSerie(comprobanteElement.getAttribute("Serie"));
         comprobante.setFolio(comprobanteElement.getAttribute("Folio"));
-        // comprobante.setFecha(sdf.parse(comprobanteElement.getAttribute("Fecha")));
+        comprobante.setFecha(cfdiFormat.formatFecha((comprobanteElement.getAttribute("Fecha"))));
         comprobanteElement.getAttribute("FormaPago");
         comprobanteElement.getAttribute("MetodoPago");
         comprobanteElement.getAttribute("CondicionesDePago");
@@ -36,24 +38,49 @@ public class Converter {
     }
 
     private void getDatosRelacionados(Element comprobanteElement) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        comprobanteElement.getAttribute("Serie");
+        comprobanteElement.getAttribute("Folio");
     }
-    
-    private Emisor getEmisor() {
-        Emisor emisor = new Emisor();
+
+    private Emisor getEmisor(Element comprobanteElement) {
+        Emisor emisor = null;
+        NodeList listEmisor = comprobanteElement.getElementsByTagName("cfdi:Emisor");
+        for (int j = 0; j < listEmisor.getLength(); j++) {
+            Node emisorNode = listEmisor.item(j);
+            if (emisorNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element emisorElement = (Element) emisorNode;
+                emisor = new Emisor();
+                emisor.setRfc(emisorElement.getAttribute("Rfc"));
+                emisor.setNombre(emisorElement.getAttribute("Nombre"));
+                emisor.setFacAtrAdquirente(emisorElement.getAttribute("FacAtrAdquirente"));
+                RegimenFiscal regimenFiscal = new RegimenFiscal();
+                regimenFiscal.setClaveRegimenfiscal(emisorElement.getAttribute("RegimenFiscal"));
+                emisor.setRegimenFiscal(regimenFiscal);
+            }
+        }
         return emisor;
     }
 
-    private void getDatosReceptor(Element receptorElement) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private Receptor getDatosReceptor(Element comprobanteElement) {
+        Receptor receptor = null;
+        NodeList listReceptor = comprobanteElement.getElementsByTagName("cfdi:Receptor");
+        for (int j = 0; j < listReceptor.getLength(); j++) {
+            Node receptorNode = listReceptor.item(j);
+            if (receptorNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element receptorElement = (Element) receptorNode;
+                // datos receptor
+                receptor = new Receptor();
+                receptor.setRfc(receptorElement.getAttribute("Rfc"));
+                receptor.setNombre(receptorElement.getAttribute("Nombre"));
+            }
+        }
+        return receptor;
     }
 
     private void getDatosConceptos(Element conceptoElement, int k) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     private void getDatosAddenda(Element comprobanteElement) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public Comprobante xml2Cfdi() {
@@ -61,7 +88,7 @@ public class Converter {
         return comprobante;
     }
 
-    public Comprobante xml2CfdiNomina(Document document) {
+    public Comprobante xml2CfdiNomina(Document document) throws ParseException {
         Comprobante comprobante = null;
         //
         NodeList listComprobante = document.getElementsByTagName("cfdi:Comprobante");
@@ -74,26 +101,18 @@ public class Converter {
         }
         //
         if (comprobanteElement != null) {
+            // validar tipo de cfdi nomina
             if (comprobanteElement.getAttribute("TipoDeComprobante").contains("N")) {
                 // Datos generales
                 comprobante = getGeneral(comprobanteElement);
                 // datos cfdi relacionados                        
                 getDatosRelacionados(comprobanteElement);
                 // Datos del Emisor
-                Emisor emisor = getEmisor();
+                Emisor emisor = getEmisor(comprobanteElement);
                 comprobante.setEmisor(emisor);
                 // Datos del Receptor
-                // datos receptor
-                NodeList listReceptor = document.getElementsByTagName("cfdi:Receptor");
-                for (int j = 0; j < listReceptor.getLength(); j++) {
-                    Node receptor = listReceptor.item(j);
-
-                    if (receptor.getNodeType() == Node.ELEMENT_NODE) {
-                        Element receptorElement = (Element) receptor;
-                        // datos receptor
-                        getDatosReceptor(receptorElement);
-                    }
-                }
+                Receptor receptor = getDatosReceptor(comprobanteElement);
+                comprobante.setReceptor(receptor);
                 // datos conceptos
                 NodeList listConceptos = comprobanteElement.getElementsByTagName("cfdi:Conceptos");
                 for (int j = 0; j < listConceptos.getLength(); j++) {
@@ -115,7 +134,7 @@ public class Converter {
                         }//Fin For [cfdi:Concepto]
                     }
                 }//Fin FOR [cfdi:Conceptos]       
-                getDatosAddenda(comprobanteElement);
+                getDatosAddenda(comprobanteElement);                //
             }
 
         }

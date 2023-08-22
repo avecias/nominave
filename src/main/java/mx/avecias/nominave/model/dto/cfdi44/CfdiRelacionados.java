@@ -5,6 +5,9 @@
 package mx.avecias.nominave.model.dto.cfdi44;
 
 import java.io.Serializable;
+import java.util.List;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
@@ -12,5 +15,36 @@ import java.io.Serializable;
  *
  */
 public class CfdiRelacionados implements Serializable {
+
+    /*
+    @TipoRelacion
+    cfdi:CfdiRelacionado
+    */
+    private String tipoRelacion;
+    private List<CfdiRelacionado> cfdiRelacionado;
+
+    public CfdiRelacionados() {
+    }
+
+    public String getTipoRelacion() {
+        return tipoRelacion;
+    }
+
+    public void setTipoRelacion(String tipoRelacion) {
+        this.tipoRelacion = tipoRelacion;
+    }
+
+    public List<CfdiRelacionado> getCfdiRelacionado() {
+        return cfdiRelacionado;
+    }
+
+    public void setCfdiRelacionado(List<CfdiRelacionado> cfdiRelacionado) {
+        this.cfdiRelacionado = cfdiRelacionado;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 
 }

@@ -5,6 +5,11 @@
 
 package mx.avecias.nominave.model.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import mx.avecias.nominave.model.enums.DateEnum;
+
 /**
  *
  * @author avecias
@@ -12,5 +17,11 @@ package mx.avecias.nominave.model.util;
  *
  */
 public class CfdiFormat {
+
+    Date formatFecha(String a) throws ParseException {
+        if(a == null || a.isEmpty()){
+            return null;
+        }return new SimpleDateFormat(DateEnum.ISO_8601DT.getValue()).parse(a);
+    }
 
 }

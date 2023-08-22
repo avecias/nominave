@@ -16,6 +16,12 @@ import org.apache.commons.lang.builder.ToStringStyle;
  *
  */
 public class InformacionGlobal implements Serializable {
+    
+    /*
+    @Periodicidad
+    @Meses
+    @Año
+    */
 
     private Integer idInformacionGlobal;
     private int anio;
