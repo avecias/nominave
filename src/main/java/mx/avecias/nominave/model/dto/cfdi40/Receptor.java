@@ -2,12 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44;
+package mx.avecias.nominave.model.dto.cfdi40;
 
 import java.io.Serializable;
-import mx.avecias.nominave.model.dto.cfdi44.cat.Pais;
-import mx.avecias.nominave.model.dto.cfdi44.cat.RegimenFiscal;
-import mx.avecias.nominave.model.dto.cfdi44.cat.UsoCfdi;
+import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Pais;
+import mx.avecias.nominave.model.dto.cfdi40.cat.RegimenFiscal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.UsoCfdi;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -30,8 +31,9 @@ public class Receptor implements Serializable {
     private Integer idReceptor;
     private String rfc;
     private String nombre;
-    private String domicilioFiscalReceptor;
     private String numRegIdTrib;
+    // catalogos
+    private CodigoPostal domicilioFiscalReceptor;
     private Pais residenciaFiscal;
     private RegimenFiscal regimenFiscalReceptor;
     private UsoCfdi usoCfdi;
@@ -63,20 +65,20 @@ public class Receptor implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getDomicilioFiscalReceptor() {
-        return domicilioFiscalReceptor;
-    }
-
-    public void setDomicilioFiscalReceptor(String domicilioFiscalReceptor) {
-        this.domicilioFiscalReceptor = domicilioFiscalReceptor;
-    }
-
     public String getNumRegIdTrib() {
         return numRegIdTrib;
     }
 
     public void setNumRegIdTrib(String numRegIdTrib) {
         this.numRegIdTrib = numRegIdTrib;
+    }
+
+    public CodigoPostal getDomicilioFiscalReceptor() {
+        return domicilioFiscalReceptor;
+    }
+
+    public void setDomicilioFiscalReceptor(CodigoPostal domicilioFiscalReceptor) {
+        this.domicilioFiscalReceptor = domicilioFiscalReceptor;
     }
 
     public Pais getResidenciaFiscal() {
@@ -102,6 +104,8 @@ public class Receptor implements Serializable {
     public void setUsoCfdi(UsoCfdi usoCfdi) {
         this.usoCfdi = usoCfdi;
     }
+
+    
     
     @Override
     public String toString() {

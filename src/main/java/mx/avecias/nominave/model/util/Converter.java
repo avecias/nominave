@@ -5,10 +5,14 @@
 package mx.avecias.nominave.model.util;
 
 import java.text.ParseException;
-import mx.avecias.nominave.model.dto.cfdi44.Comprobante;
-import mx.avecias.nominave.model.dto.cfdi44.Emisor;
-import mx.avecias.nominave.model.dto.cfdi44.Receptor;
-import mx.avecias.nominave.model.dto.cfdi44.cat.RegimenFiscal;
+import java.util.EnumSet;
+import mx.avecias.nominave.model.dto.cfdi40.Complemento;
+import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
+import mx.avecias.nominave.model.dto.cfdi40.Conceptos;
+import mx.avecias.nominave.model.dto.cfdi40.Emisor;
+import mx.avecias.nominave.model.dto.cfdi40.Receptor;
+import mx.avecias.nominave.model.dto.cfdi40.Timbre;
+import mx.avecias.nominave.model.dto.cfdi40.cat.RegimenFiscal;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -77,10 +81,54 @@ public class Converter {
         return receptor;
     }
 
-    private void getDatosConceptos(Element conceptoElement, int k) {
+    private Conceptos getDatosConceptos(Element comprobanteElement) {
+        Conceptos conceptos = null;
+        NodeList listConceptos = comprobanteElement.getElementsByTagName("cfdi:Conceptos");
+        for (int j = 0; j < listConceptos.getLength(); j++) {
+            Node conceptosNode = listConceptos.item(j);
+            if (conceptosNode.getNodeType() == Node.ELEMENT_NODE) {
+                conceptos = new Conceptos();
+                Element conceptosElement = (Element) conceptosNode;
+                NodeList listConcepto = conceptosElement.getElementsByTagName("cfdi:Concepto");
+                for (int k = 0; k < listConcepto.getLength(); k++) {
+                    Node concepto = listConcepto.item(k);
+                    //
+                    if (concepto.getNodeType() == Node.ELEMENT_NODE) {
+                        Element conceptoElement = (Element) concepto;
+                        //Conceptos                                        
+                        conceptoElement.getAttribute("ClaveProdServ");
+                        conceptoElement.getAttribute("NoIdentificacion");
+                        conceptoElement.getAttribute("Cantidad");
+                        conceptoElement.getAttribute("ClaveUnidad");
+                        conceptoElement.getAttribute("Unidad");
+                        conceptoElement.getAttribute("Descripcion");
+                        conceptoElement.getAttribute("ValorUnitario");
+                        conceptoElement.getAttribute("Importe");
+                        conceptoElement.getAttribute("Descuento");
+                    }
+
+                }
+            }
+        }
+        return conceptos;
+    }
+
+    private static Timbre getTimbre(Element comprobanteElement) {
+        Timbre timbre = null;
+        NodeList listTimbreConceptos = comprobanteElement.getElementsByTagName("tfd:TimbreFiscalDigital");
+        for (int i = 0; i < listTimbreConceptos.getLength(); i++) {
+            Node timbreConceptos = listTimbreConceptos.item(i);
+            if (timbreConceptos.getNodeType() == Node.ELEMENT_NODE) {
+                Element timbreConceptosElement = (Element) timbreConceptos;
+                timbre = new Timbre();
+                timbre.setUuid(timbreConceptosElement.getAttribute("UUID"));
+            }
+        }
+        return timbre;
     }
 
     private void getDatosAddenda(Element comprobanteElement) {
+
     }
 
     public Comprobante xml2Cfdi() {
@@ -114,27 +162,13 @@ public class Converter {
                 Receptor receptor = getDatosReceptor(comprobanteElement);
                 comprobante.setReceptor(receptor);
                 // datos conceptos
-                NodeList listConceptos = comprobanteElement.getElementsByTagName("cfdi:Conceptos");
-                for (int j = 0; j < listConceptos.getLength(); j++) {
-                    Node conceptos = listConceptos.item(j);
-
-                    if (conceptos.getNodeType() == Node.ELEMENT_NODE) {
-                        Element conceptosElement = (Element) conceptos;
-
-                        NodeList listConcepto = conceptosElement.getElementsByTagName("cfdi:Concepto");
-                        for (int k = 0; k < listConcepto.getLength(); k++) {
-                            Node concepto = listConcepto.item(k);
-                            //
-                            if (concepto.getNodeType() == Node.ELEMENT_NODE) {
-                                Element conceptoElement = (Element) concepto;
-                                //Conceptos                                        
-                                getDatosConceptos(conceptoElement, k);
-                            }
-
-                        }//Fin For [cfdi:Concepto]
-                    }
-                }//Fin FOR [cfdi:Conceptos]       
-                getDatosAddenda(comprobanteElement);                //
+                Conceptos conceptos = getDatosConceptos(comprobanteElement);
+                comprobante.setConceptos(conceptos);
+                // timbre
+                Timbre timbre = getTimbre(comprobanteElement);
+                Complemento complemento = new Complemento();
+                // addenda
+                getDatosAddenda(comprobanteElement);
             }
 
         }

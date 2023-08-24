@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package mx.avecias.nominave.model.util;
 
 import java.text.ParseException;
@@ -12,16 +11,31 @@ import mx.avecias.nominave.model.enums.DateEnum;
 
 /**
  *
- * @author avecias
- * date: Aug 18, 2023 1:20:22 PM
+ * @author avecias date: Aug 18, 2023 1:20:22 PM
  *
  */
 public class CfdiFormat {
 
-    Date formatFecha(String a) throws ParseException {
-        if(a == null || a.isEmpty()){
+    /**
+     *
+     * @param a
+     * @return
+     * @throws ParseException
+     */
+    public Date formatFecha(String a) throws ParseException {
+        if (a == null || a.isEmpty()) {
             return null;
-        }return new SimpleDateFormat(DateEnum.ISO_8601DT.getValue()).parse(a);
+        }
+        return new SimpleDateFormat(DateEnum.ISO_8601DT.getValue()).parse(a);
+    }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public String opcionalString(String s) {
+        return (s == null || s.isEmpty()) ? null : s;
     }
 
 }

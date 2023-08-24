@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44;
+package mx.avecias.nominave.model.dto.cfdi40;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import mx.avecias.nominave.model.dto.User;
-import mx.avecias.nominave.model.dto.cfdi44.cat.CodigoPostal;
-import mx.avecias.nominave.model.dto.cfdi44.cat.Exportacion;
-import mx.avecias.nominave.model.dto.cfdi44.cat.MetodoPago;
-import mx.avecias.nominave.model.dto.cfdi44.cat.Moneda;
-import mx.avecias.nominave.model.dto.cfdi44.cat.TipoDeComprobante;
+import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
+import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Moneda;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TipoDeComprobante;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -23,7 +23,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class Comprobante implements Serializable {
 
-    /*@Version
+    /*
+    @Version
     @Serie
     @Folio
     @Fecha
@@ -77,10 +78,22 @@ public class Comprobante implements Serializable {
     public Comprobante() {
     }
 
+    /**
+     * version 
+     * regresa version
+     * requerido
+     * @return
+     */
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version
+     * establecer la version
+     * requerido
+     * @param version
+     */
     public void setVersion(String version) {
         this.version = version;
     }

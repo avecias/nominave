@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44.cat;
+package mx.avecias.nominave.model.dto.cfdi40.cat;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -10,25 +10,26 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
- * @author avecias date: Aug 16, 2023 5:44:05 PM
+ * @author avecias date: Aug 16, 2023 4:04:02 PM
  *
  */
-public class MetodoPago implements Serializable {
+public class TipoDeComprobante implements Serializable {
 
-    private String claveMetodopago;
+    private String claveTipoDeComprobante;
     private String descripcion;
+    private String valorMaximo;
     private String fechaInicioDeVigencia;
     private String fechaFinDeVigencia;
 
-    public MetodoPago() {
+    public TipoDeComprobante() {
     }
 
-    public String getClaveMetodopago() {
-        return claveMetodopago;
+    public String getClaveTipoDeComprobante() {
+        return claveTipoDeComprobante;
     }
 
-    public void setClaveMetodopago(String claveMetodopago) {
-        this.claveMetodopago = claveMetodopago;
+    public void setClaveTipoDeComprobante(String claveTipoDeComprobante) {
+        this.claveTipoDeComprobante = claveTipoDeComprobante;
     }
 
     public String getDescripcion() {
@@ -37,6 +38,14 @@ public class MetodoPago implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getValorMaximo() {
+        return valorMaximo;
+    }
+
+    public void setValorMaximo(String valorMaximo) {
+        this.valorMaximo = valorMaximo;
     }
 
     public String getFechaInicioDeVigencia() {

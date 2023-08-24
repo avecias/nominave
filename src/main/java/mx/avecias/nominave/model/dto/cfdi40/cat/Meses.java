@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44.cat;
+package mx.avecias.nominave.model.dto.cfdi40.cat;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -10,26 +10,25 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
- * @author avecias date: Aug 16, 2023 4:04:02 PM
+ * @author avecias date: Aug 16, 2023 7:21:56 PM
  *
  */
-public class TipoDeComprobante implements Serializable {
+public class Meses implements Serializable {
 
-    private String claveTipoDeComprobante;
+    private String claveMeses;
     private String descripcion;
-    private String valorMaximo;
     private String fechaInicioDeVigencia;
     private String fechaFinDeVigencia;
 
-    public TipoDeComprobante() {
+    public Meses() {
     }
 
-    public String getClaveTipoDeComprobante() {
-        return claveTipoDeComprobante;
+    public String getClaveMeses() {
+        return claveMeses;
     }
 
-    public void setClaveTipoDeComprobante(String claveTipoDeComprobante) {
-        this.claveTipoDeComprobante = claveTipoDeComprobante;
+    public void setClaveMeses(String claveMeses) {
+        this.claveMeses = claveMeses;
     }
 
     public String getDescripcion() {
@@ -38,14 +37,6 @@ public class TipoDeComprobante implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getValorMaximo() {
-        return valorMaximo;
-    }
-
-    public void setValorMaximo(String valorMaximo) {
-        this.valorMaximo = valorMaximo;
     }
 
     public String getFechaInicioDeVigencia() {
@@ -68,4 +59,5 @@ public class TipoDeComprobante implements Serializable {
     public String toString() {
         return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
+
 }

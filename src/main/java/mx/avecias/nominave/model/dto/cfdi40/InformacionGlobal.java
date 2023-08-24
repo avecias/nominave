@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44;
+package mx.avecias.nominave.model.dto.cfdi40;
 
 import java.io.Serializable;
-import mx.avecias.nominave.model.dto.cfdi44.cat.Meses;
-import mx.avecias.nominave.model.dto.cfdi44.cat.Periodicidad;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Periodicidad;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 

@@ -4,7 +4,7 @@
  */
 package test.cfdi40.xml;
 
-import mx.avecias.nominave.model.dto.cfdi44.Comprobante;
+import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
 
 /**
  *

@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44;
+package mx.avecias.nominave.model.dto.cfdi40.cat;
 
 import java.io.Serializable;
 
 /**
  *
- * @author avecias date: Aug 16, 2023 6:34:33 PM
+ * @author avecias date: Aug 22, 2023 4:02:13 PM
  *
  */
-public class Impuestos implements Serializable {
+public class Pais implements Serializable {
 
 }

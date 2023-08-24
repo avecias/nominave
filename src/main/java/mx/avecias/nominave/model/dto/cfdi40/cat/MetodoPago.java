@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44.cat;
+package mx.avecias.nominave.model.dto.cfdi40.cat;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -10,25 +10,25 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
- * @author avecias date: Aug 16, 2023 7:21:56 PM
+ * @author avecias date: Aug 16, 2023 5:44:05 PM
  *
  */
-public class Meses implements Serializable {
+public class MetodoPago implements Serializable {
 
-    private String claveMeses;
+    private String claveMetodopago;
     private String descripcion;
     private String fechaInicioDeVigencia;
     private String fechaFinDeVigencia;
 
-    public Meses() {
+    public MetodoPago() {
     }
 
-    public String getClaveMeses() {
-        return claveMeses;
+    public String getClaveMetodopago() {
+        return claveMetodopago;
     }
 
-    public void setClaveMeses(String claveMeses) {
-        this.claveMeses = claveMeses;
+    public void setClaveMetodopago(String claveMetodopago) {
+        this.claveMetodopago = claveMetodopago;
     }
 
     public String getDescripcion() {
@@ -59,5 +59,4 @@ public class Meses implements Serializable {
     public String toString() {
         return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
-
 }

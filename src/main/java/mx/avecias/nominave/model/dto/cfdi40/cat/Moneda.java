@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mx.avecias.nominave.model.dto.cfdi44.cat;
+package mx.avecias.nominave.model.dto.cfdi40.cat;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -10,25 +10,27 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
- * @author avecias date: Aug 16, 2023 7:40:07 PM
+ * @author avecias date: Aug 16, 2023 3:55:19 PM
  *
  */
-public class Periodicidad implements Serializable {
+public class Moneda implements Serializable {
 
-    private String clavePeriodicidad;
+    private String claveMoneda;
     private String descripcion;
+    private String decimales;
+    private String porcentajeVariacion;
     private String fechaInicioDeVigencia;
     private String fechaFinDeVigencia;
 
-    public Periodicidad() {
+    public Moneda() {
     }
 
-    public String getClavePeriodicidad() {
-        return clavePeriodicidad;
+    public String getClaveMoneda() {
+        return claveMoneda;
     }
 
-    public void setClavePeriodicidad(String clavePeriodicidad) {
-        this.clavePeriodicidad = clavePeriodicidad;
+    public void setClaveMoneda(String claveMoneda) {
+        this.claveMoneda = claveMoneda;
     }
 
     public String getDescripcion() {
@@ -37,6 +39,22 @@ public class Periodicidad implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getDecimales() {
+        return decimales;
+    }
+
+    public void setDecimales(String decimales) {
+        this.decimales = decimales;
+    }
+
+    public String getPorcentajeVariacion() {
+        return porcentajeVariacion;
+    }
+
+    public void setPorcentajeVariacion(String porcentajeVariacion) {
+        this.porcentajeVariacion = porcentajeVariacion;
     }
 
     public String getFechaInicioDeVigencia() {
