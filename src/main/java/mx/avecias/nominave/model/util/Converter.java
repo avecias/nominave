@@ -5,14 +5,26 @@
 package mx.avecias.nominave.model.util;
 
 import java.text.ParseException;
-import java.util.EnumSet;
+import mx.avecias.nominave.model.dto.cfdi40.CfdiRelacionados;
 import mx.avecias.nominave.model.dto.cfdi40.Complemento;
 import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
 import mx.avecias.nominave.model.dto.cfdi40.Conceptos;
 import mx.avecias.nominave.model.dto.cfdi40.Emisor;
+import mx.avecias.nominave.model.dto.cfdi40.FormaPago;
+import mx.avecias.nominave.model.dto.cfdi40.InformacionGlobal;
 import mx.avecias.nominave.model.dto.cfdi40.Receptor;
 import mx.avecias.nominave.model.dto.cfdi40.Timbre;
+import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
+import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Moneda;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Pais;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Periodicidad;
 import mx.avecias.nominave.model.dto.cfdi40.cat.RegimenFiscal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TipoDeComprobante;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TipoRelacion;
+import mx.avecias.nominave.model.dto.cfdi40.cat.UsoCfdi;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,20 +42,83 @@ public class Converter {
     private Comprobante getGeneral(Element comprobanteElement) throws ParseException {
         Comprobante comprobante = new Comprobante();
         comprobante.setVersion(comprobanteElement.getAttribute("Version"));
-        comprobante.setSerie(comprobanteElement.getAttribute("Serie"));
-        comprobante.setFolio(comprobanteElement.getAttribute("Folio"));
+        comprobante.setSerie(cfdiFormat.opcionalString(comprobanteElement.getAttribute("Serie")));
+        comprobante.setFolio(cfdiFormat.opcionalString(comprobanteElement.getAttribute("Folio")));
         comprobante.setFecha(cfdiFormat.formatFecha((comprobanteElement.getAttribute("Fecha"))));
-        comprobanteElement.getAttribute("FormaPago");
-        comprobanteElement.getAttribute("MetodoPago");
-        comprobanteElement.getAttribute("CondicionesDePago");
-        comprobanteElement.getAttribute("SubTotal");
-        comprobanteElement.getAttribute("Descuento");
+        comprobante.setSello(comprobanteElement.getAttribute("Sello"));
+        FormaPago formaPago = new FormaPago();
+        formaPago.setClaveFormaPago(cfdiFormat.opcionalString(comprobanteElement.getAttribute("FormaPago")));
+        comprobante.setFormaPago(formaPago);
+        comprobante.setNoCertificado(comprobanteElement.getAttribute("NoCertificado"));
+        comprobante.setCertificado(comprobanteElement.getAttribute("Certificado"));
+        comprobante.setCondicionesDepago(comprobanteElement.getAttribute("CondicionesDePago"));
+        comprobante.setSubTotal(cfdiFormat.formatImporte(comprobanteElement.getAttribute("SubTotal")));
+        comprobante.setDescuento(cfdiFormat.formatImporte(comprobanteElement.getAttribute("Descuento")));
+        Moneda moneda = new Moneda();
+        moneda.setClaveMoneda(comprobanteElement.getAttribute("Moneda"));
+        comprobante.setMoneda(moneda);
+        comprobante.setTipoCambio(cfdiFormat.formatImporte(comprobanteElement.getAttribute("TipoCambio")));
+        comprobante.setTotal(cfdiFormat.formatImporte(comprobanteElement.getAttribute("Total")));
+        TipoDeComprobante tdc = new TipoDeComprobante();
+        tdc.setClaveTipoDeComprobante(comprobanteElement.getAttribute("TipoDeComprobante"));
+        comprobante.setTipoDeComprobante(tdc);
+        Exportacion exportacion = new Exportacion();
+        exportacion.setClaveExportacion(comprobanteElement.getAttribute("Exportacion"));
+        comprobante.setExportacion(exportacion);
+        MetodoPago metodoPago = new MetodoPago();
+        metodoPago.setClaveMetodopago(cfdiFormat.opcionalString(comprobanteElement.getAttribute("MetodoPago")));
+        comprobante.setMetodoPago(metodoPago);
+        CodigoPostal cp = new CodigoPostal();
+        cp.setClaveCodigopostal(comprobanteElement.getAttribute("LugarExpedicion"));
+        comprobante.setLugarDeExpedicion(cp);
+        comprobante.setConfirmacion(cfdiFormat.opcionalString(comprobanteElement.getAttribute("Confirmacion")));
         return comprobante;
     }
 
-    private void getDatosRelacionados(Element comprobanteElement) {
-        comprobanteElement.getAttribute("Serie");
-        comprobanteElement.getAttribute("Folio");
+    private InformacionGlobal getInformacionGlobal(Element comprobanteElement) {
+        InformacionGlobal informacionGlobal = null;
+        NodeList listInformacionGlobal = comprobanteElement.getElementsByTagName("cfdi:InformacionGlobal");
+        for (int j = 0; j < listInformacionGlobal.getLength(); j++) {
+            Node informacionGlobalNode = listInformacionGlobal.item(j);
+            if (informacionGlobalNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element informacionGlobalElement = (Element) informacionGlobalNode;
+                informacionGlobal = new InformacionGlobal();
+                informacionGlobal.setAnio(cfdiFormat.formatInt(informacionGlobalElement.getAttribute("Año")));
+                Periodicidad periodicidad = new Periodicidad();
+                periodicidad.setClavePeriodicidad(informacionGlobalElement.getAttribute(""));
+                informacionGlobal.setPeriodicidad(periodicidad);
+                Meses meses = new Meses();
+                meses.setClaveMeses(informacionGlobalElement.getAttribute(""));
+                informacionGlobal.setMeses(meses);
+            }
+        }
+        return informacionGlobal;
+    }
+
+    private CfdiRelacionados getDatosRelacionados(Element comprobanteElement) {
+        CfdiRelacionados cfdiRelacionados = null;
+        NodeList listCfdiRelacionados = comprobanteElement.getElementsByTagName("cfdi:CfdiRelacionados");
+        for (int j = 0; j < listCfdiRelacionados.getLength(); j++) {
+            Node cfdiRelacionadosNode = listCfdiRelacionados.item(j);
+            if (cfdiRelacionadosNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element cfdiRelacionadosElement = (Element) cfdiRelacionadosNode;
+                cfdiRelacionados = new CfdiRelacionados();
+                TipoRelacion tipoRelacion = new TipoRelacion();
+                tipoRelacion.setClaveTiporelacion(cfdiRelacionadosElement.getAttribute("TipoRelacion"));
+                cfdiRelacionados.setTipoRelacion(tipoRelacion);
+                NodeList listCfdiRelacionado = cfdiRelacionadosElement.getElementsByTagName("cfdi:CfdiRelacionado");
+                for (int k = 0; k < listCfdiRelacionado.getLength(); k++) {
+                    Node conceptoCfdiRelacionado = listCfdiRelacionado.item(k);
+                    //
+                    if (conceptoCfdiRelacionado.getNodeType() == Node.ELEMENT_NODE) {
+                        Element cfdiRelacionadoElement = (Element) conceptoCfdiRelacionado;
+                        //Conceptos                                        
+                        cfdiRelacionadoElement.getAttribute("UUID");
+                    }
+                }
+            }
+        }
+        return cfdiRelacionados;
     }
 
     private Emisor getEmisor(Element comprobanteElement) {
@@ -76,6 +151,19 @@ public class Converter {
                 receptor = new Receptor();
                 receptor.setRfc(receptorElement.getAttribute("Rfc"));
                 receptor.setNombre(receptorElement.getAttribute("Nombre"));
+                CodigoPostal cp = new CodigoPostal();
+                cp.setClaveCodigopostal(receptorElement.getAttribute("DomicilioFiscalReceptor"));
+                receptor.setDomicilioFiscalReceptor(cp);
+                Pais pais = new Pais();
+                pais.setClavePais(cfdiFormat.opcionalString(receptorElement.getAttribute("ResidenciaFiscal")));
+                receptor.setResidenciaFiscal(pais);
+                receptor.setNumRegIdTrib(cfdiFormat.opcionalString(receptorElement.getAttribute("NumRegIdTrib")));
+                RegimenFiscal regimenFiscal = new RegimenFiscal();
+                regimenFiscal.setClaveRegimenfiscal(receptorElement.getAttribute("RegimenFiscalReceptor"));
+                receptor.setRegimenFiscalReceptor(regimenFiscal);
+                UsoCfdi usoCfdi = new UsoCfdi();
+                usoCfdi.setClaveUsocfdi(receptorElement.getAttribute("UsoCFDI"));
+                receptor.setUsoCfdi(usoCfdi);
             }
         }
         return receptor;
@@ -88,6 +176,7 @@ public class Converter {
             Node conceptosNode = listConceptos.item(j);
             if (conceptosNode.getNodeType() == Node.ELEMENT_NODE) {
                 conceptos = new Conceptos();
+                
                 Element conceptosElement = (Element) conceptosNode;
                 NodeList listConcepto = conceptosElement.getElementsByTagName("cfdi:Concepto");
                 for (int k = 0; k < listConcepto.getLength(); k++) {
@@ -95,8 +184,8 @@ public class Converter {
                     //
                     if (concepto.getNodeType() == Node.ELEMENT_NODE) {
                         Element conceptoElement = (Element) concepto;
-                        //Conceptos                                        
-                        conceptoElement.getAttribute("ClaveProdServ");
+                        //Conceptos     
+                        System.out.println(conceptoElement.getAttribute("ClaveProdServ"));
                         conceptoElement.getAttribute("NoIdentificacion");
                         conceptoElement.getAttribute("Cantidad");
                         conceptoElement.getAttribute("ClaveUnidad");
@@ -106,7 +195,6 @@ public class Converter {
                         conceptoElement.getAttribute("Importe");
                         conceptoElement.getAttribute("Descuento");
                     }
-
                 }
             }
         }
@@ -131,6 +219,28 @@ public class Converter {
 
     }
 
+    public static void getOtros(Element c) {
+        c.getAttribute("Importe");
+        c.getAttribute("Descuento");
+        c.getAttribute("Impuesto");
+        c.getAttribute("Base");
+        c.getAttribute("Impuesto");
+        c.getAttribute("TasaOCuota");
+        c.getAttribute("TasaOCuota");
+        c.getAttribute("TipoFactor");
+        c.getAttribute("TipoFactor");
+        c.getAttribute("TasaOCuota");
+        c.getAttribute("Importe");
+        c.getAttribute("TotalImpuestosTrasladados");
+        c.getAttribute("TotalImpuestosTrasladados");
+        c.getAttribute("TotalImpuestosTrasladados");
+        c.getAttribute("TasaOCuota");
+        c.getAttribute("Impuesto");
+        c.getAttribute("TipoFactor");
+        c.getAttribute("TasaOCuota");
+        c.getAttribute("Importe");
+    }
+
     public Comprobante xml2Cfdi() {
         Comprobante comprobante = new Comprobante();
         return comprobante;
@@ -153,6 +263,9 @@ public class Converter {
             if (comprobanteElement.getAttribute("TipoDeComprobante").contains("N")) {
                 // Datos generales
                 comprobante = getGeneral(comprobanteElement);
+                // datos informacion global
+                InformacionGlobal informacionGlobal = getInformacionGlobal(comprobanteElement);
+                comprobante.setInformacionGlobal(informacionGlobal);
                 // datos cfdi relacionados                        
                 getDatosRelacionados(comprobanteElement);
                 // Datos del Emisor

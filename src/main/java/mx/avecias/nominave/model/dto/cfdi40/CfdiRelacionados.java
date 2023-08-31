@@ -6,6 +6,7 @@ package mx.avecias.nominave.model.dto.cfdi40;
 
 import java.io.Serializable;
 import java.util.List;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TipoRelacion;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -19,25 +20,83 @@ public class CfdiRelacionados implements Serializable {
     /*
     @TipoRelacion
     cfdi:CfdiRelacionado
-    */
-    private String tipoRelacion;
+     */
+    private TipoRelacion tipoRelacion;
     private List<CfdiRelacionado> cfdiRelacionado;
 
     public CfdiRelacionados() {
     }
 
-    public String getTipoRelacion() {
+    /**
+     * TipoRelacion
+     *
+     * Descripción Atributo requerido para indicar la clave de la relación que
+     * existe entre éste que se está generando y el o los CFDI previos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_TipoRelacion DIARIO OFICIAL Jueves 13 de enero de
+     * 2022
+     *
+     * @return
+     */
+    public TipoRelacion getTipoRelacion() {
         return tipoRelacion;
     }
 
-    public void setTipoRelacion(String tipoRelacion) {
+    /**
+     * TipoRelacion
+     *
+     * Descripción Atributo requerido para indicar la clave de la relación que
+     * existe entre éste que se está generando y el o los CFDI previos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_TipoRelacion DIARIO OFICIAL Jueves 13 de enero de
+     * 2022
+     *
+     * @param tipoRelacion
+     */
+    public void setTipoRelacion(TipoRelacion tipoRelacion) {
         this.tipoRelacion = tipoRelacion;
     }
 
+    /**
+     *
+     * Elemento: CfdiRelacionado
+     *
+     * Diagrama
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo requerido para precisar la información de los comprobantes
+     * relacionados.
+     *
+     * @return
+     */
     public List<CfdiRelacionado> getCfdiRelacionado() {
         return cfdiRelacionado;
     }
 
+    /**
+     *
+     * Elemento: CfdiRelacionado
+     *
+     * Diagrama
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo requerido para precisar la información de los comprobantes
+     * relacionados.
+     *
+     * @param cfdiRelacionado
+     */
     public void setCfdiRelacionado(List<CfdiRelacionado> cfdiRelacionado) {
         this.cfdiRelacionado = cfdiRelacionado;
     }

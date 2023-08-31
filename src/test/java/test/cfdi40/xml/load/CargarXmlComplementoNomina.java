@@ -28,37 +28,6 @@ import org.xml.sax.SAXException;
  */
 public class CargarXmlComplementoNomina {
 
-    public static void getDatosImpuestosTrasladadosConceptoPorDefecto(Element conceptoElement) {
-        conceptoElement.getAttribute("Importe");
-        conceptoElement.getAttribute("Descuento");
-        conceptoElement.getAttribute("Impuesto");
-    }
-
-    public static void getDatosImpuestosTrasladadosConcepto(Element impuestosTrasladoElement) {
-        impuestosTrasladoElement.getAttribute("Base");
-        impuestosTrasladoElement.getAttribute("Impuesto");
-        impuestosTrasladoElement.getAttribute("TasaOCuota");
-        impuestosTrasladoElement.getAttribute("TasaOCuota");
-        impuestosTrasladoElement.getAttribute("TipoFactor");
-        impuestosTrasladoElement.getAttribute("TipoFactor");
-        impuestosTrasladoElement.getAttribute("TasaOCuota");
-        impuestosTrasladoElement.getAttribute("Importe");
-    }
-
-    public static void getDatosImpuestosGeneral(Element impuestosElement) {
-        impuestosElement.getAttribute("TotalImpuestosTrasladados");
-        impuestosElement.getAttribute("TotalImpuestosTrasladados");
-        impuestosElement.getAttribute("TotalImpuestosTrasladados");
-    }
-
-    public static void getDatosImpuestosTrasladadosGeneral(Element totalImpuestosTrasladoElement) {
-        totalImpuestosTrasladoElement.getAttribute("TasaOCuota");
-        totalImpuestosTrasladoElement.getAttribute("Impuesto");
-        totalImpuestosTrasladoElement.getAttribute("TipoFactor");
-        totalImpuestosTrasladoElement.getAttribute("TasaOCuota");
-        totalImpuestosTrasladoElement.getAttribute("Importe");
-    }
-
     public static void getDatosAddenda(Element comprobanteElement) {
         comprobanteElement.getAttribute("Serie");
     }

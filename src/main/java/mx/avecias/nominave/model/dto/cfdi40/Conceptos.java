@@ -5,6 +5,9 @@
 package mx.avecias.nominave.model.dto.cfdi40;
 
 import java.io.Serializable;
+import java.util.List;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
@@ -12,7 +15,31 @@ import java.io.Serializable;
  *
  */
 public class Conceptos implements Serializable {
-    
-    
+
+    private List<Concepto> conceptos;
+
+    public Conceptos() {
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Concepto> getConceptos() {
+        return conceptos;
+    }
+
+    /**
+     *
+     * @param conceptos
+     */
+    public void setConceptos(List<Concepto> conceptos) {
+        this.conceptos = conceptos;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 
 }

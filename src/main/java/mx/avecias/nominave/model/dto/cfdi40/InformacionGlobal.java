@@ -16,50 +16,142 @@ import org.apache.commons.lang.builder.ToStringStyle;
  *
  */
 public class InformacionGlobal implements Serializable {
-    
+
     /*
     @Periodicidad
     @Meses
     @Año
-    */
-
+     */
     private Integer idInformacionGlobal;
     private int anio;
     private Meses meses;
     private Periodicidad periodicidad;
     private Comprobante comprobante;
 
+    /**
+     *
+     */
     public InformacionGlobal() {
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getIdInformacionGlobal() {
         return idInformacionGlobal;
     }
 
+    /**
+     *
+     * @param idInformacionGlobal
+     */
     public void setIdInformacionGlobal(Integer idInformacionGlobal) {
         this.idInformacionGlobal = idInformacionGlobal;
     }
 
+    /**
+     * Año
+     *
+     * Descripción Atributo requerido para expresar el año al que corresponde la
+     * información del comprobante global.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:short
+     *
+     * Valor Mínimo Incluyente 2021
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * @return
+     */
     public int getAnio() {
         return anio;
     }
 
+    /**
+     * Año
+     *
+     * Descripción Atributo requerido para expresar el año al que corresponde la
+     * información del comprobante global.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:short
+     *
+     * Valor Mínimo Incluyente 2021
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * @param anio
+     */
     public void setAnio(int anio) {
         this.anio = anio;
     }
 
+    /**
+     * Meses
+     *
+     * Descripción Atributo requerido para expresar el mes o los meses al que
+     * corresponde la información del comprobante global.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Meses
+     *
+     * @return
+     */
     public Meses getMeses() {
         return meses;
     }
 
+    /**
+     * Meses
+     *
+     * Descripción Atributo requerido para expresar el mes o los meses al que
+     * corresponde la información del comprobante global.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Meses
+     *
+     * @param meses
+     */
     public void setMeses(Meses meses) {
         this.meses = meses;
     }
 
+    /**
+     * Periodicidad
+     *
+     * Descripción Atributo requerido para expresar el período al que
+     * corresponde la información del comprobante global. Jueves 13 de enero de
+     * 2022 DIARIO OFICIAL
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Periodicidad
+     *
+     * @return
+     */
     public Periodicidad getPeriodicidad() {
         return periodicidad;
     }
 
+    /**
+     * Periodicidad
+     *
+     * Descripción Atributo requerido para expresar el período al que
+     * corresponde la información del comprobante global. Jueves 13 de enero de
+     * 2022 DIARIO OFICIAL
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Periodicidad
+     *
+     * @param periodicidad
+     */
     public void setPeriodicidad(Periodicidad periodicidad) {
         this.periodicidad = periodicidad;
     }

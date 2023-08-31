@@ -10,28 +10,25 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  *
- * @author avecias date: Aug 22, 2023 4:03:15 PM
+ * @author avecias date: Aug 30, 2023 3:59:58 PM
  *
  */
-public class UsoCfdi implements Serializable {
+public class TipoRelacion implements Serializable {
 
-    private String claveUsocfdi;
+    private String claveTiporelacion;
     private String descripcion;
-    private String aplicaParaTipoPersonaFisica;
-    private String aplicaParaTipoPersonaMoral;
     private String fechaInicioDeVigencia;
     private String fechaFinDeVigencia;
-    private String regimenFiscalReceptor;
 
-    public UsoCfdi() {
+    public TipoRelacion() {
     }
 
-    public String getClaveUsocfdi() {
-        return claveUsocfdi;
+    public String getClaveTiporelacion() {
+        return claveTiporelacion;
     }
 
-    public void setClaveUsocfdi(String claveUsocfdi) {
-        this.claveUsocfdi = claveUsocfdi;
+    public void setClaveTiporelacion(String claveTiporelacion) {
+        this.claveTiporelacion = claveTiporelacion;
     }
 
     public String getDescripcion() {
@@ -40,22 +37,6 @@ public class UsoCfdi implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getAplicaParaTipoPersonaFisica() {
-        return aplicaParaTipoPersonaFisica;
-    }
-
-    public void setAplicaParaTipoPersonaFisica(String aplicaParaTipoPersonaFisica) {
-        this.aplicaParaTipoPersonaFisica = aplicaParaTipoPersonaFisica;
-    }
-
-    public String getAplicaParaTipoPersonaMoral() {
-        return aplicaParaTipoPersonaMoral;
-    }
-
-    public void setAplicaParaTipoPersonaMoral(String aplicaParaTipoPersonaMoral) {
-        this.aplicaParaTipoPersonaMoral = aplicaParaTipoPersonaMoral;
     }
 
     public String getFechaInicioDeVigencia() {
@@ -72,14 +53,6 @@ public class UsoCfdi implements Serializable {
 
     public void setFechaFinDeVigencia(String fechaFinDeVigencia) {
         this.fechaFinDeVigencia = fechaFinDeVigencia;
-    }
-
-    public String getRegimenFiscalReceptor() {
-        return regimenFiscalReceptor;
-    }
-
-    public void setRegimenFiscalReceptor(String regimenFiscalReceptor) {
-        this.regimenFiscalReceptor = regimenFiscalReceptor;
     }
 
     @Override

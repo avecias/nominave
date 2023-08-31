@@ -4,10 +4,13 @@
  */
 package mx.avecias.nominave.model.util;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import mx.avecias.nominave.model.enums.DateEnum;
+import mx.avecias.nominave.model.enums.DecimalEnum;
 
 /**
  *
@@ -15,6 +18,9 @@ import mx.avecias.nominave.model.enums.DateEnum;
  *
  */
 public class CfdiFormat {
+
+    SimpleDateFormat sdf = new SimpleDateFormat(DateEnum.ISO_8601DT.getValue());
+    DecimalFormat df = new DecimalFormat(DecimalEnum.IMPORTE.getValue());
 
     /**
      *
@@ -26,7 +32,16 @@ public class CfdiFormat {
         if (a == null || a.isEmpty()) {
             return null;
         }
-        return new SimpleDateFormat(DateEnum.ISO_8601DT.getValue()).parse(a);
+        return sdf.parse(a);
+    }
+
+    /**
+     *
+     * @param f
+     * @return
+     */
+    public String parseFecha(Date f) {
+        return (f == null) ? null : sdf.format(f);
     }
 
     /**
@@ -36,6 +51,26 @@ public class CfdiFormat {
      */
     public String opcionalString(String s) {
         return (s == null || s.isEmpty()) ? null : s;
+    }
+
+    /**
+     *
+     * @param d
+     * @return
+     * @throws ParseException
+     */
+    public BigDecimal formatImporte(String d) throws ParseException {
+        if (d == null || d.isEmpty()) {
+            return null;
+        }
+        return new BigDecimal(d);
+    }
+    
+    public Integer formatInt(String i){
+        if (i == null || i.isEmpty()) {
+            return null;
+        }
+        return Integer.valueOf(i);
     }
 
 }
