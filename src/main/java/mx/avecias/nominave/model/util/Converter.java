@@ -5,15 +5,20 @@
 package mx.avecias.nominave.model.util;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import mx.avecias.nominave.model.dto.cfdi40.CfdiRelacionados;
 import mx.avecias.nominave.model.dto.cfdi40.Complemento;
 import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
+import mx.avecias.nominave.model.dto.cfdi40.Concepto;
 import mx.avecias.nominave.model.dto.cfdi40.Conceptos;
 import mx.avecias.nominave.model.dto.cfdi40.Emisor;
 import mx.avecias.nominave.model.dto.cfdi40.FormaPago;
 import mx.avecias.nominave.model.dto.cfdi40.InformacionGlobal;
 import mx.avecias.nominave.model.dto.cfdi40.Receptor;
 import mx.avecias.nominave.model.dto.cfdi40.Timbre;
+import mx.avecias.nominave.model.dto.cfdi40.cat.ClaveProdServ;
+import mx.avecias.nominave.model.dto.cfdi40.cat.ClaveUnidad;
 import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
@@ -169,33 +174,41 @@ public class Converter {
         return receptor;
     }
 
-    private Conceptos getDatosConceptos(Element comprobanteElement) {
+    private Conceptos getDatosConceptos(Element comprobanteElement) throws ParseException {
         Conceptos conceptos = null;
         NodeList listConceptos = comprobanteElement.getElementsByTagName("cfdi:Conceptos");
         for (int j = 0; j < listConceptos.getLength(); j++) {
             Node conceptosNode = listConceptos.item(j);
             if (conceptosNode.getNodeType() == Node.ELEMENT_NODE) {
                 conceptos = new Conceptos();
-                
+                List<Concepto> cs = new ArrayList<>();
                 Element conceptosElement = (Element) conceptosNode;
                 NodeList listConcepto = conceptosElement.getElementsByTagName("cfdi:Concepto");
                 for (int k = 0; k < listConcepto.getLength(); k++) {
-                    Node concepto = listConcepto.item(k);
+                    Node conceptoNode = listConcepto.item(k);
                     //
-                    if (concepto.getNodeType() == Node.ELEMENT_NODE) {
-                        Element conceptoElement = (Element) concepto;
-                        //Conceptos     
-                        System.out.println(conceptoElement.getAttribute("ClaveProdServ"));
-                        conceptoElement.getAttribute("NoIdentificacion");
-                        conceptoElement.getAttribute("Cantidad");
-                        conceptoElement.getAttribute("ClaveUnidad");
-                        conceptoElement.getAttribute("Unidad");
-                        conceptoElement.getAttribute("Descripcion");
-                        conceptoElement.getAttribute("ValorUnitario");
-                        conceptoElement.getAttribute("Importe");
-                        conceptoElement.getAttribute("Descuento");
+                    if (conceptoNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element conceptoElement = (Element) conceptoNode;
+                        //Concepto
+                        Concepto concepto = new Concepto();
+                        ClaveProdServ claveProdServ = new ClaveProdServ();
+                        claveProdServ.setClaveprodserv(conceptoElement.getAttribute("ClaveProdServ"));
+                        concepto.setClaveProdServ(claveProdServ);
+                        concepto.setNoIdentificacion(cfdiFormat.opcionalString(conceptoElement.getAttribute("NoIdentificacion")));
+                        concepto.setCantidad(cfdiFormat.formatImporte(conceptoElement.getAttribute("Cantidad")));
+                        ClaveUnidad claveUnidad = new ClaveUnidad();
+                        claveUnidad.setClaveUnidad(conceptoElement.getAttribute("ClaveUnidad"));
+                        concepto.setClaveUnidad(claveUnidad);
+                        concepto.setUnidad(cfdiFormat.opcionalString(conceptoElement.getAttribute("Unidad")));
+                        concepto.setDescripcion(conceptoElement.getAttribute("Descripcion"));
+                        concepto.setValorUnitario(cfdiFormat.formatImporte(conceptoElement.getAttribute("ValorUnitario")));
+                        concepto.setImporte(cfdiFormat.formatImporte(conceptoElement.getAttribute("Importe")));
+                        concepto.setDescuento(cfdiFormat.formatImporte(conceptoElement.getAttribute("Descuento")));
+                        // 
+                        cs.add(concepto);
                     }
                 }
+                conceptos.setConceptos(cs);
             }
         }
         return conceptos;

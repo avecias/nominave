@@ -662,10 +662,32 @@ public class Comprobante implements Serializable {
         this.receptor = receptor;
     }
 
+    /**
+     * Elemento: Conceptos Diagrama
+     *
+     *
+     *
+     *
+     * Descripción Nodo requerido para listar los conceptos cubiertos por el
+     * comprobante.
+     *
+     * @return
+     */
     public Conceptos getConceptos() {
         return conceptos;
     }
 
+    /**
+     * Elemento: Conceptos Diagrama
+     *
+     *
+     *
+     *
+     * Descripción Nodo requerido para listar los conceptos cubiertos por el
+     * comprobante.
+     *
+     * @param conceptos
+     */
     public void setConceptos(Conceptos conceptos) {
         this.conceptos = conceptos;
     }

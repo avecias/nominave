@@ -16,12 +16,31 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class Conceptos implements Serializable {
 
+    private Integer idConceptos;
     private List<Concepto> conceptos;
 
     public Conceptos() {
     }
 
+    public Integer getIdConceptos() {
+        return idConceptos;
+    }
+
+    public void setIdConceptos(Integer idConceptos) {
+        this.idConceptos = idConceptos;
+    }
+
     /**
+     * lemento: Concepto Diagrama Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo requerido para registrar la información detallada de un bien o
+     * servicio amparado en el comprobante. DIARIO OFICIAL Jueves 13 de enero de
+     * 2022
      *
      * @return
      */
@@ -30,6 +49,16 @@ public class Conceptos implements Serializable {
     }
 
     /**
+     * lemento: Concepto Diagrama Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo requerido para registrar la información detallada de un bien o
+     * servicio amparado en el comprobante. DIARIO OFICIAL Jueves 13 de enero de
+     * 2022
      *
      * @param conceptos
      */
