@@ -66,6 +66,26 @@ public class Comprobante implements Serializable {
     private MetodoPago metodoPago;
     private CodigoPostal lugarDeExpedicion;
     // Elementos
+    /**
+     * Elementos Hijo (min,max)
+     *
+     * Secuencia (1, 1) InformacionGlobal (0, 1)
+     *
+     * CfdiRelacionados (0, Ilimitado)
+     *
+     * Emisor (1, 1)
+     *
+     * Receptor (1, 1)
+     *
+     * Conceptos (1, 1)
+     *
+     * Impuestos (0, 1)
+     *
+     * Complemento (0, 1)
+     *
+     * Addenda (0, 1)
+     *
+     */
     private InformacionGlobal informacionGlobal;
     private List<CfdiRelacionados> cfdiRelacionados;
     private Emisor emisor;

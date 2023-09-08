@@ -24,6 +24,7 @@ import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
 import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Moneda;
+import mx.avecias.nominave.model.dto.cfdi40.cat.ObjetoImp;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Pais;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Periodicidad;
 import mx.avecias.nominave.model.dto.cfdi40.cat.RegimenFiscal;
@@ -204,6 +205,9 @@ public class Converter {
                         concepto.setValorUnitario(cfdiFormat.formatImporte(conceptoElement.getAttribute("ValorUnitario")));
                         concepto.setImporte(cfdiFormat.formatImporte(conceptoElement.getAttribute("Importe")));
                         concepto.setDescuento(cfdiFormat.formatImporte(conceptoElement.getAttribute("Descuento")));
+                        ObjetoImp objetoImp = new ObjetoImp();
+                        objetoImp.setClaveObjetoimp(conceptoElement.getAttribute("ObjetoImp"));
+                        concepto.setObjetoImp(objetoImp);
                         // 
                         cs.add(concepto);
                     }
@@ -293,6 +297,9 @@ public class Converter {
                 // timbre
                 Timbre timbre = getTimbre(comprobanteElement);
                 Complemento complemento = new Complemento();
+                complemento.setTimbre(timbre);
+                // complemento nomina
+                
                 // addenda
                 getDatosAddenda(comprobanteElement);
             }

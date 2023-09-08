@@ -434,18 +434,72 @@ public class Concepto implements Serializable {
         this.claveUnidad = claveUnidad;
     }
 
+    /**
+     * ObjetoImp
+     *
+     * Descripción Atributo requerido para expresar si la operación comercial es
+     * objeto o no de impuesto.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_ObjetoImp
+     *
+     * @return
+     */
     public ObjetoImp getObjetoImp() {
         return objetoImp;
     }
 
+    /**
+     * ObjetoImp
+     *
+     * Descripción Atributo requerido para expresar si la operación comercial es
+     * objeto o no de impuesto.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_ObjetoImp
+     *
+     * @param objetoImp
+     */
     public void setObjetoImp(ObjetoImp objetoImp) {
         this.objetoImp = objetoImp;
     }
 
+    /**
+     * Elemento: Impuestos
+     *
+     * Diagrama
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo condicional para capturar los impuestos aplicables al presente
+     * concepto.
+     *
+     * @return
+     */
     public Impuestos getImpuestos() {
         return impuestos;
     }
 
+    /**
+     * Elemento: Impuestos
+     *
+     * Diagrama
+     *
+     *
+     *
+     *
+     * Descripción
+     *
+     * Nodo condicional para capturar los impuestos aplicables al presente
+     * concepto.
+     *
+     * @param impuestos
+     */
     public void setImpuestos(Impuestos impuestos) {
         this.impuestos = impuestos;
     }

@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class Complemento implements Serializable {
 
     private Comprobante comprobante;
+    private Timbre timbre;
 
     public Complemento() {
     }
@@ -25,5 +26,15 @@ public class Complemento implements Serializable {
     public void setComprobante(Comprobante comprobante) {
         this.comprobante = comprobante;
     }
+
+    public Timbre getTimbre() {
+        return timbre;
+    }
+
+    public void setTimbre(Timbre timbre) {
+        this.timbre = timbre;
+    }
+    
+    
 
 }
