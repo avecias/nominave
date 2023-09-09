@@ -35,7 +35,7 @@ public class CargarXmlComplementoNomina {
     public static void main(String[] args) {
         try {
             // Directorio raiz de los XMLs
-            File root = new File("/Users/avecias/Downloads/");
+            File root = new File("/Users/avecias/Downloads/xmls/");
             String[] extensions = {"xml"}; // archivos con extencion xml
             // Coleccion de archivos de xml
             Collection<File> files = FileUtils.listFiles(root, extensions, true);

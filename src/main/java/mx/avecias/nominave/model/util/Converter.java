@@ -4,6 +4,7 @@
  */
 package mx.avecias.nominave.model.util;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,19 @@ import mx.avecias.nominave.model.dto.cfdi40.Concepto;
 import mx.avecias.nominave.model.dto.cfdi40.Conceptos;
 import mx.avecias.nominave.model.dto.cfdi40.Emisor;
 import mx.avecias.nominave.model.dto.cfdi40.FormaPago;
+import mx.avecias.nominave.model.dto.cfdi40.Impuestos;
 import mx.avecias.nominave.model.dto.cfdi40.InformacionGlobal;
 import mx.avecias.nominave.model.dto.cfdi40.Receptor;
+import mx.avecias.nominave.model.dto.cfdi40.Retenciones;
 import mx.avecias.nominave.model.dto.cfdi40.Timbre;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TipoFactor;
+import mx.avecias.nominave.model.dto.cfdi40.Traslado;
+import mx.avecias.nominave.model.dto.cfdi40.Traslados;
 import mx.avecias.nominave.model.dto.cfdi40.cat.ClaveProdServ;
 import mx.avecias.nominave.model.dto.cfdi40.cat.ClaveUnidad;
 import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
+import mx.avecias.nominave.model.dto.cfdi40.cat.Impuesto;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
 import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Moneda;
@@ -28,6 +35,7 @@ import mx.avecias.nominave.model.dto.cfdi40.cat.ObjetoImp;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Pais;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Periodicidad;
 import mx.avecias.nominave.model.dto.cfdi40.cat.RegimenFiscal;
+import mx.avecias.nominave.model.dto.cfdi40.cat.TasaOCuota;
 import mx.avecias.nominave.model.dto.cfdi40.cat.TipoDeComprobante;
 import mx.avecias.nominave.model.dto.cfdi40.cat.TipoRelacion;
 import mx.avecias.nominave.model.dto.cfdi40.cat.UsoCfdi;
@@ -208,6 +216,10 @@ public class Converter {
                         ObjetoImp objetoImp = new ObjetoImp();
                         objetoImp.setClaveObjetoimp(conceptoElement.getAttribute("ObjetoImp"));
                         concepto.setObjetoImp(objetoImp);
+                        // elemnentos de concepto
+                        // Impuestos
+                        Impuestos impuestos = getImpuestos(conceptoElement);
+                        concepto.setImpuestos(impuestos);
                         // 
                         cs.add(concepto);
                     }
@@ -217,8 +229,66 @@ public class Converter {
         }
         return conceptos;
     }
+    
+    
+    private Impuestos getImpuestos(Element conceptoElement) throws ParseException {
+        Impuestos impuestos = null;
+        NodeList listImpuestos = conceptoElement.getElementsByTagName("cfdi:Impuestos");
+        for (int i = 0; i < listImpuestos.getLength(); i++) {
+            Node impuestosNode = listImpuestos.item(i);
+            if (impuestosNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element impuestosElement = (Element) impuestosNode;
+                impuestos = new Impuestos();
+                // Traslados
+                Traslados traslados = getTraslados(impuestosElement);
+                impuestos.setTraslados(traslados);
+                // Retenciones
+                Retenciones retenciones = getRetenciones(impuestosElement);
+                impuestos.setRetenciones(retenciones);
+            }
+        }
+        return impuestos;
+    }
+    
+    private Traslados getTraslados(Element impuestosElement) throws ParseException {
+        Traslados traslados = null;
+        NodeList listTraslado = impuestosElement.getElementsByTagName("cfdi:Traslado");
+        for (int i = 0; i < listTraslado.getLength(); i++) {
+            Node trasladoNode = listTraslado.item(i);
+            if (trasladoNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element trasladoElement = (Element) trasladoNode;
+                traslados = new Traslados();
+                Traslado traslado = new Traslado();
+                traslado.setBase(cfdiFormat.formatImporte(trasladoElement.getAttribute("Base")));
+                Impuesto impuesto = new Impuesto();
+                impuesto.setClaveImpuesto(trasladoElement.getAttribute("Impuesto"));
+                traslado.setImpuesto(impuesto);
+                TipoFactor tipoFactor = new TipoFactor();
+                tipoFactor.setClaveTipofactor(trasladoElement.getAttribute("TipoFactor"));
+                traslado.setTipoFactor(tipoFactor);
+                TasaOCuota tasaOCuota = new TasaOCuota();
+                tasaOCuota.setClaveTasaOCuota(trasladoElement.getAttribute(""));
+                traslado.setTasaOCuota(tasaOCuota);
+                traslados.setTraslado(traslado);
+            }
+        }
+        return traslados;
+    }
+    
+    private Retenciones getRetenciones(Element impuestosElement) {
+        Retenciones retenciones = null;
+        NodeList listRetencion = impuestosElement.getElementsByTagName("cfdi:Retenciones");
+        for (int i = 0; i < listRetencion.getLength(); i++) {
+            Node retencionNode = listRetencion.item(i);
+            if (retencionNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element retencionElement = (Element) retencionNode;
+                System.out.println(retencionElement.getAttribute(""));
+            }
+        }
+        return retenciones;
+    }
 
-    private static Timbre getTimbre(Element comprobanteElement) {
+    private Timbre getTimbre(Element comprobanteElement) {
         Timbre timbre = null;
         NodeList listTimbreConceptos = comprobanteElement.getElementsByTagName("tfd:TimbreFiscalDigital");
         for (int i = 0; i < listTimbreConceptos.getLength(); i++) {
