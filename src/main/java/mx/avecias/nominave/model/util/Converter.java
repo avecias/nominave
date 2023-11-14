@@ -4,7 +4,6 @@
  */
 package mx.avecias.nominave.model.util;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
