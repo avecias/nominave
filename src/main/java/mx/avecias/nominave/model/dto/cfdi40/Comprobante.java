@@ -4,12 +4,18 @@
  */
 package mx.avecias.nominave.model.dto.cfdi40;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import mx.avecias.nominave.model.dto.User;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.FechaAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.TImporteAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
 import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
@@ -22,6 +28,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  *
  * @author avecias
  */
+@XmlRootElement(name = "Comprobante")
+@XmlType(propOrder = {"informacionGlobal", "cfdiRelacionados", "emisor", "receptor", "conceptos", "impuestos", "complemento", "addenda"})
 public class Comprobante implements Serializable {
 
     /*
@@ -46,11 +54,8 @@ public class Comprobante implements Serializable {
     private String serie;
     private String folio;
     private Date fecha;
-    @JsonIgnore
     private String sello;
-    @JsonIgnore
     private String noCertificado;
-    @JsonIgnore
     private String certificado;
     private String condicionesDepago;
     private BigDecimal subTotal;
@@ -117,6 +122,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlAttribute(name = "Version", required = true)
     public String getVersion() {
         return version;
     }
@@ -142,16 +148,47 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * opcional
+     * Serie
+     *
+     * Descripción Atributo opcional para precisar la serie para control interno
+     * del contribuyente. Este atributo acepta una cadena de caracteres.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 25
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,25}
      *
      * @return
      */
+    @XmlAttribute(name = "Serie", required = false)
     public String getSerie() {
         return serie;
     }
 
     /**
-     * opcional
+     * Serie
+     *
+     * Descripción Atributo opcional para precisar la serie para control interno
+     * del contribuyente. Este atributo acepta una cadena de caracteres.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 25
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,25}
      *
      * @param serie
      */
@@ -160,16 +197,47 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * opcional
+     * Folio
+     *
+     * Descripción Atributo opcional para control interno del contribuyente que
+     * expresa el folio del comprobante, acepta una cadena de caracteres.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 40
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,40}
      *
      * @return
      */
+    @XmlAttribute(name = "Folio", required = false)
     public String getFolio() {
         return folio;
     }
 
     /**
-     * opcional
+     * Folio
+     *
+     * Descripción Atributo opcional para control interno del contribuyente que
+     * expresa el folio del comprobante, acepta una cadena de caracteres.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 40
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,40}
      *
      * @param folio
      */
@@ -178,16 +246,64 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * requerido
+     * Fecha
+     *
+     * Descripción Atributo requerido para la expresión de la fecha y hora de
+     * expedición del Comprobante Fiscal Digital por Internet. Se expresa en la
+     * forma AAAA- MM-DDThh:mm:ss y debe corresponder con la hora local donde se
+     * expide el comprobante.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_FechaH Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     * Sello
+     *
+     * Descripción Atributo requerido para contener el sello digital del
+     * comprobante fiscal, al que hacen referencia las reglas de resolución
+     * miscelánea vigente. El sello debe ser expresado como una cadena de texto
+     * en formato Base 64.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Espacio en Blanco Colapsar
+     *
      *
      * @return
      */
+    @XmlJavaTypeAdapter(FechaAdapter.class)
+    @XmlAttribute(name = "Fecha", required = true)
     public Date getFecha() {
         return fecha;
     }
 
     /**
-     * requerido
+     * Fecha
+     *
+     * Descripción Atributo requerido para la expresión de la fecha y hora de
+     * expedición del Comprobante Fiscal Digital por Internet. Se expresa en la
+     * forma AAAA- MM-DDThh:mm:ss y debe corresponder con la hora local donde se
+     * expide el comprobante.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_FechaH Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     * Sello
+     *
+     * Descripción Atributo requerido para contener el sello digital del
+     * comprobante fiscal, al que hacen referencia las reglas de resolución
+     * miscelánea vigente. El sello debe ser expresado como una cadena de texto
+     * en formato Base 64.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Espacio en Blanco Colapsar
+     *
      *
      * @param fecha
      */
@@ -199,6 +315,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlAttribute(name = "Sello", required = false)
     public String getSello() {
         return sello;
     }
@@ -212,14 +329,45 @@ public class Comprobante implements Serializable {
     }
 
     /**
+     * NoCertificado
+     *
+     * Descripción Atributo requerido para expresar el número de serie del
+     * certificado de sello digital que ampara al comprobante, de acuerdo con el
+     * acuse correspondiente a 20 posiciones otorgado por el sistema del SAT.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud 20
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [0-9]{20}
      *
      * @return
      */
+    @XmlAttribute(name = "NoCertificado", required = true)
     public String getNoCertificado() {
         return noCertificado;
     }
 
     /**
+     * NoCertificado
+     *
+     * Descripción Atributo requerido para expresar el número de serie del
+     * certificado de sello digital que ampara al comprobante, de acuerdo con el
+     * acuse correspondiente a 20 posiciones otorgado por el sistema del SAT.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud 20
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [0-9]{20}
      *
      * @param noCertificado
      */
@@ -228,14 +376,37 @@ public class Comprobante implements Serializable {
     }
 
     /**
+     * Certificado
+     *
+     * Descripción Atributo requerido que sirve para incorporar el certificado
+     * de sello digital que ampara al comprobante, como texto en formato base
+     * 64.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Espacio en Blanco Colapsar
      *
      * @return
      */
+    @XmlAttribute(name = "Certificado", required = true)
     public String getCertificado() {
         return certificado;
     }
 
     /**
+     * Certificado
+     *
+     * Descripción Atributo requerido que sirve para incorporar el certificado
+     * de sello digital que ampara al comprobante, como texto en formato base
+     * 64.
+     *
+     * Uso requerido
+     *
+     * Tipo Base xs:string
+     *
+     * Espacio en Blanco Colapsar
      *
      * @param certificado
      */
@@ -244,15 +415,51 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * condicional
+     * CondicionesDePago
+     *
+     * Descripción Atributo condicional para expresar las condiciones
+     * comerciales aplicables para el pago del comprobante fiscal digital por
+     * Internet. Este atributo puede ser condicionado mediante atributos o
+     * complementos.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 1000
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,1000} DIARIO OFICIAL Jueves 13 de enero de 2022
      *
      * @return
      */
+    @XmlAttribute(name = "CondicionesDePago", required = false)
     public String getCondicionesDepago() {
         return condicionesDepago;
     }
 
     /**
+     * CondicionesDePago
+     *
+     * Descripción Atributo condicional para expresar las condiciones
+     * comerciales aplicables para el pago del comprobante fiscal digital por
+     * Internet. Este atributo puede ser condicionado mediante atributos o
+     * complementos.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:string
+     *
+     * Longitud Mínima 1
+     *
+     * Longitud Máxima 1000
+     *
+     * Espacio en Blanco Colapsar
+     *
+     * Patrón [^|]{1,1000} DIARIO OFICIAL Jueves 13 de enero de 2022
      *
      * @param condicionesDepago
      */
@@ -260,10 +467,37 @@ public class Comprobante implements Serializable {
         this.condicionesDepago = condicionesDepago;
     }
 
+    /**
+     * SubTotal
+     *
+     * Descripción Atributo requerido para representar la suma de los importes
+     * de los conceptos antes de descuentos e impuesto. No se permiten valores
+     * negativos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_Importe
+     *
+     * @return
+     */
+    @XmlJavaTypeAdapter(TImporteAdapter.class)
     public BigDecimal getSubTotal() {
         return subTotal;
     }
 
+    /**
+     * SubTotal
+     *
+     * Descripción Atributo requerido para representar la suma de los importes
+     * de los conceptos antes de descuentos e impuesto. No se permiten valores
+     * negativos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_Importe
+     *
+     * @param subTotal
+     */
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
@@ -736,6 +970,7 @@ public class Comprobante implements Serializable {
         this.addenda = addenda;
     }
 
+    @XmlTransient
     public User getUser() {
         return user;
     }

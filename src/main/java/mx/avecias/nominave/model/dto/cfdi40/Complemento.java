@@ -5,6 +5,8 @@
 package mx.avecias.nominave.model.dto.cfdi40;
 
 import java.io.Serializable;
+import java.util.List;
+import mx.avecias.nominave.model.dto.cfdi40.nomina12.Nomina;
 
 /**
  *
@@ -15,6 +17,7 @@ public class Complemento implements Serializable {
 
     private Comprobante comprobante;
     private Timbre timbre;
+    private List<Nomina> nominas;
 
     public Complemento() {
     }
@@ -34,7 +37,13 @@ public class Complemento implements Serializable {
     public void setTimbre(Timbre timbre) {
         this.timbre = timbre;
     }
-    
-    
+
+    public List<Nomina> getNominas() {
+        return nominas;
+    }
+
+    public void setNominas(List<Nomina> nominas) {
+        this.nominas = nominas;
+    }
 
 }

@@ -15,7 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
-import mx.avecias.nominave.model.util.Converter;
+import mx.avecias.nominave.model.util.Converter2Comprobante;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,7 +40,7 @@ public class CargarXmlComplementoNomina {
             // Coleccion de archivos de xml
             Collection<File> files = FileUtils.listFiles(root, extensions, true);
             // creamos el objecto convertidor 
-            Converter converter = new Converter();
+            Converter2Comprobante converter = new Converter2Comprobante();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             for (File file : files) {
@@ -50,7 +50,7 @@ public class CargarXmlComplementoNomina {
                 // normalizar en objecto document
                 document.getDocumentElement().normalize();
                 // convertidor
-                Comprobante comprobante = converter.xml2CfdiNomina(document);
+                Comprobante comprobante = converter.cfdiNomina(document);
                 System.out.println(comprobante);
             }
             System.out.println("comprobante ");

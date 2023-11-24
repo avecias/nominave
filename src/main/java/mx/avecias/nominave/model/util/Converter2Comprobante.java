@@ -48,7 +48,7 @@ import org.w3c.dom.NodeList;
  * @author avecias date: Aug 18, 2023 3:04:10 PM
  *
  */
-public class Converter {
+public class Converter2Comprobante {
 
     private final CfdiFormat cfdiFormat = new CfdiFormat();
 
@@ -327,12 +327,12 @@ public class Converter {
         c.getAttribute("Importe");
     }
 
-    public Comprobante xml2Cfdi() {
+    public Comprobante cfdi() {
         Comprobante comprobante = new Comprobante();
         return comprobante;
     }
 
-    public Comprobante xml2CfdiNomina(Document document) throws ParseException {
+    public Comprobante cfdiNomina(Document document) throws ParseException {
         Comprobante comprobante = null;
         //
         NodeList listComprobante = document.getElementsByTagName("cfdi:Comprobante");
