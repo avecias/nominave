@@ -14,8 +14,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import mx.avecias.nominave.model.dto.User;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.CodigoPostalAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.ExportacionAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.adapter.FechaAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.FormaPagoAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.MetodoPagoAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.MonedaAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.adapter.TImporteAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.TipoDeComprobanteAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.cat.CodigoPostal;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Exportacion;
 import mx.avecias.nominave.model.dto.cfdi40.cat.MetodoPago;
@@ -481,6 +487,7 @@ public class Comprobante implements Serializable {
      * @return
      */
     @XmlJavaTypeAdapter(TImporteAdapter.class)
+    @XmlAttribute(name = "SubTotal", required = true)
     public BigDecimal getSubTotal() {
         return subTotal;
     }
@@ -502,25 +509,97 @@ public class Comprobante implements Serializable {
         this.subTotal = subTotal;
     }
 
+    /**
+     * Descuento
+     *
+     * Descripción Atributo condicional para representar el importe total de los
+     * descuentos aplicables antes de impuestos. No se permiten valores
+     * negativos. Se debe registrar cuando existan conceptos con descuento.
+     *
+     * Uso opcional
+     *
+     * Tipo Especial tdCFDI:t_Importe
+     *
+     * @return
+     */
+    @XmlJavaTypeAdapter(TImporteAdapter.class)
+    @XmlAttribute(name = "SubTotal", required = false)
     public BigDecimal getDescuento() {
         return descuento;
     }
 
+    /**
+     * Descuento
+     *
+     * Descripción Atributo condicional para representar el importe total de los
+     * descuentos aplicables antes de impuestos. No se permiten valores
+     * negativos. Se debe registrar cuando existan conceptos con descuento.
+     *
+     * Uso opcional
+     *
+     * Tipo Especial tdCFDI:t_Importe
+     *
+     * @param descuento
+     */
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
 
     /**
-     * condicional
+     * TipoCambio
+     *
+     * Descripción Atributo condicional para representar el tipo de cambio FIX
+     * conforme con la moneda usada. Es requerido cuando la clave de moneda es
+     * distinta de MXN y de XXX. El valor debe reflejar el número de pesos
+     * mexicanos que equivalen a una unidad de la divisa señalada en el atributo
+     * moneda. Si el valor está fuera del porcentaje aplicable a la moneda
+     * tomado del catálogo c_Moneda, el emisor debe obtener del PAC que vaya a
+     * timbrar el CFDI, de manera no automática, una clave de confirmación para
+     * ratificar que el valor es correcto e integrar dicha clave en el atributo
+     * Confirmacion.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:decimal
+     *
+     * Valor Mínimo Incluyente 0.000001
+     *
+     * Posiciones Decimales 6
+     *
+     * Espacio en Blanco Colapsar
+     *
      *
      * @return
      */
+    @XmlJavaTypeAdapter(TImporteAdapter.class)
+    @XmlAttribute(name = "TipoCambio", required = false)
     public BigDecimal getTipoCambio() {
         return tipoCambio;
     }
 
     /**
-     * condicional
+     * TipoCambio
+     *
+     * Descripción Atributo condicional para representar el tipo de cambio FIX
+     * conforme con la moneda usada. Es requerido cuando la clave de moneda es
+     * distinta de MXN y de XXX. El valor debe reflejar el número de pesos
+     * mexicanos que equivalen a una unidad de la divisa señalada en el atributo
+     * moneda. Si el valor está fuera del porcentaje aplicable a la moneda
+     * tomado del catálogo c_Moneda, el emisor debe obtener del PAC que vaya a
+     * timbrar el CFDI, de manera no automática, una clave de confirmación para
+     * ratificar que el valor es correcto e integrar dicha clave en el atributo
+     * Confirmacion.
+     *
+     * Uso opcional
+     *
+     * Tipo Base xs:decimal
+     *
+     * Valor Mínimo Incluyente 0.000001
+     *
+     * Posiciones Decimales 6
+     *
+     * Espacio en Blanco Colapsar
+     *
      *
      * @param tipoCambio
      */
@@ -529,16 +608,52 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * requerido
+     * Total
+     *
+     * Descripción Atributo requerido para representar la suma del subtotal,
+     * menos los descuentos aplicables, más las contribuciones recibidas
+     * (impuestos trasladados - federales y/o locales, derechos, productos,
+     * aprovechamientos, aportaciones de seguridad social, contribuciones de
+     * mejoras) menos los impuestos retenidos federales y/o locales. Si el valor
+     * es superior al límite que establezca el SAT en la Resolución Miscelánea
+     * Fiscal vigente, el emisor debe obtener del PAC que vaya a timbrar el
+     * CFDI, de manera no automática, una clave de confirmación para ratificar
+     * Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     * que el valor es correcto e integrar dicha clave en el atributo
+     * Confirmacion. No se permiten valores negativos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_Importe
      *
      * @return
      */
+    @XmlJavaTypeAdapter(TImporteAdapter.class)
+    @XmlAttribute(name = "Total", required = false)
     public BigDecimal getTotal() {
         return total;
     }
 
     /**
-     * requerido
+     * Total
+     *
+     * Descripción Atributo requerido para representar la suma del subtotal,
+     * menos los descuentos aplicables, más las contribuciones recibidas
+     * (impuestos trasladados - federales y/o locales, derechos, productos,
+     * aprovechamientos, aportaciones de seguridad social, contribuciones de
+     * mejoras) menos los impuestos retenidos federales y/o locales. Si el valor
+     * es superior al límite que establezca el SAT en la Resolución Miscelánea
+     * Fiscal vigente, el emisor debe obtener del PAC que vaya a timbrar el
+     * CFDI, de manera no automática, una clave de confirmación para ratificar
+     * Jueves 13 de enero de 2022 DIARIO OFICIAL
+     *
+     * que el valor es correcto e integrar dicha clave en el atributo
+     * Confirmacion. No se permiten valores negativos.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial tdCFDI:t_Importe
      *
      * @param total
      */
@@ -567,6 +682,7 @@ public class Comprobante implements Serializable {
      *
      * @return confirmacion
      */
+    @XmlAttribute(name = "Confirmacion", required = false)
     public String getConfirmacion() {
         return confirmacion;
     }
@@ -597,16 +713,32 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * requerido
+     * FormaPago
+     *
+     * Descripción Atributo condicional para expresar la clave de la forma de
+     * pago de los bienes o servicios amparados por el comprobante.
+     *
+     * Uso opcional
+     *
+     * Tipo Especial catCFDI:c_FormaPago
      *
      * @return
      */
+    @XmlJavaTypeAdapter(FormaPagoAdapter.class)
+    @XmlAttribute(name = "FormaPago", required = false)
     public FormaPago getFormaPago() {
         return formaPago;
     }
 
     /**
-     * requerido
+     * FormaPago
+     *
+     * Descripción Atributo condicional para expresar la clave de la forma de
+     * pago de los bienes o servicios amparados por el comprobante.
+     *
+     * Uso opcional
+     *
+     * Tipo Especial catCFDI:c_FormaPago
      *
      * @param formaPago
      */
@@ -615,16 +747,36 @@ public class Comprobante implements Serializable {
     }
 
     /**
-     * requerido
+     * Moneda
+     *
+     * Descripción Atributo requerido para identificar la clave de la moneda
+     * utilizada para expresar los montos, cuando se usa moneda nacional se
+     * registra MXN. Conforme con la especificación ISO 4217.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Moneda
+     *
      *
      * @return
      */
+    @XmlJavaTypeAdapter(MonedaAdapter.class)
+    @XmlAttribute(name = "Moneda", required = true)
     public Moneda getMoneda() {
         return moneda;
     }
 
     /**
-     * requerido
+     * Moneda
+     *
+     * Descripción Atributo requerido para identificar la clave de la moneda
+     * utilizada para expresar los montos, cuando se usa moneda nacional se
+     * registra MXN. Conforme con la especificación ISO 4217.
+     *
+     * Uso requerido
+     *
+     * Tipo Especial catCFDI:c_Moneda
+     *
      *
      * @param moneda
      */
@@ -644,6 +796,8 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(TipoDeComprobanteAdapter.class)
+    @XmlAttribute(name = "TipoDeComprobante", required = true)
     public TipoDeComprobante getTipoDeComprobante() {
         return tipoDeComprobante;
     }
@@ -676,6 +830,8 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(ExportacionAdapter.class)
+    @XmlAttribute(name = "Exportacion", required = true)
     public Exportacion getExportacion() {
         return exportacion;
     }
@@ -709,6 +865,8 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(MetodoPagoAdapter.class)
+    @XmlAttribute(name = "MetodoPago", required = true)
     public MetodoPago getMetodoPago() {
         return metodoPago;
     }
@@ -742,6 +900,8 @@ public class Comprobante implements Serializable {
      *
      * @return lugarDeExpedicion
      */
+    @XmlJavaTypeAdapter(CodigoPostalAdapter.class)
+    @XmlAttribute(name = "LugarExpedicion", required = true)
     public CodigoPostal getLugarDeExpedicion() {
         return lugarDeExpedicion;
     }

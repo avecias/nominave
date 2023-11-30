@@ -15,16 +15,16 @@ import java.text.DecimalFormat;
  */
 public class TImporteAdapter extends XmlAdapter<String, BigDecimal> {
 
-    private DecimalFormat df = new DecimalFormat("###,###,###,###,###,###.######");
+    private final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###.######");
 
     @Override
     public BigDecimal unmarshal(String vt) throws Exception {
-        return new BigDecimal(vt);
+        return vt != null ? new BigDecimal(vt) : null;
     }
 
     @Override
     public String marshal(BigDecimal bt) throws Exception {
-        return df.format(bt);
+        return bt != null ? df.format(bt) : null;
     }
 
 }
