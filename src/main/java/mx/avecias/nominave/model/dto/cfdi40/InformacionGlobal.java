@@ -4,7 +4,12 @@
  */
 package mx.avecias.nominave.model.dto.cfdi40;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.MesesAdapter;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.PeriodicidadAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Meses;
 import mx.avecias.nominave.model.dto.cfdi40.cat.Periodicidad;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -38,6 +43,7 @@ public class InformacionGlobal implements Serializable {
      *
      * @return
      */
+    @XmlTransient
     public Integer getIdInformacionGlobal() {
         return idInformacionGlobal;
     }
@@ -66,6 +72,7 @@ public class InformacionGlobal implements Serializable {
      *
      * @return
      */
+    @XmlAttribute(name = "Año", required = true)
     public int getAnio() {
         return anio;
     }
@@ -102,6 +109,8 @@ public class InformacionGlobal implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(MesesAdapter.class)
+    @XmlAttribute(name = "Meses", required = true)
     public Meses getMeses() {
         return meses;
     }
@@ -135,6 +144,8 @@ public class InformacionGlobal implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(PeriodicidadAdapter.class)
+    @XmlAttribute(name = "Periodicidad", required = true)
     public Periodicidad getPeriodicidad() {
         return periodicidad;
     }
@@ -156,6 +167,7 @@ public class InformacionGlobal implements Serializable {
         this.periodicidad = periodicidad;
     }
 
+    @XmlTransient
     public Comprobante getComprobante() {
         return comprobante;
     }

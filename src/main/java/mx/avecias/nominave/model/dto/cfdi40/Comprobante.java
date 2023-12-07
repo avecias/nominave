@@ -5,6 +5,7 @@
 package mx.avecias.nominave.model.dto.cfdi40;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.XmlType;
@@ -98,7 +99,7 @@ public class Comprobante implements Serializable {
      *
      */
     private InformacionGlobal informacionGlobal;
-    private List<CfdiRelacionados> cfdiRelacionados;
+    private CfdiRelacionados cfdiRelacionados;
     private Emisor emisor;
     private Receptor receptor;
     private Conceptos conceptos;
@@ -937,6 +938,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlElement(name = "InformacionGlobal", required = false)
     public InformacionGlobal getInformacionGlobal() {
         return informacionGlobal;
     }
@@ -975,7 +977,8 @@ public class Comprobante implements Serializable {
      *
      * @return cfdiRelacionados
      */
-    public List<CfdiRelacionados> getCfdiRelacionados() {
+    @XmlElement(name = "CfdiRelacionados", required = false)
+    public CfdiRelacionados getCfdiRelacionados() {
         return cfdiRelacionados;
     }
 
@@ -994,7 +997,7 @@ public class Comprobante implements Serializable {
      *
      * @param cfdiRelacionados
      */
-    public void setCfdiRelacionados(List<CfdiRelacionados> cfdiRelacionados) {
+    public void setCfdiRelacionados(CfdiRelacionados cfdiRelacionados) {
         this.cfdiRelacionados = cfdiRelacionados;
     }
 
@@ -1013,6 +1016,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlElement(name = "Emisor", required = true)
     public Emisor getEmisor() {
         return emisor;
     }
@@ -1052,6 +1056,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlElement(name = "Receptor", required = true)
     public Receptor getReceptor() {
         return receptor;
     }
@@ -1087,6 +1092,7 @@ public class Comprobante implements Serializable {
      *
      * @return
      */
+    @XmlElement(name = "Conceptos", required = true)
     public Conceptos getConceptos() {
         return conceptos;
     }

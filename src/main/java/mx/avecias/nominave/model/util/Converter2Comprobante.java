@@ -7,6 +7,7 @@ package mx.avecias.nominave.model.util;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import mx.avecias.nominave.model.dto.cfdi40.CfdiRelacionado;
 import mx.avecias.nominave.model.dto.cfdi40.CfdiRelacionados;
 import mx.avecias.nominave.model.dto.cfdi40.Complemento;
 import mx.avecias.nominave.model.dto.cfdi40.Comprobante;
@@ -98,10 +99,10 @@ public class Converter2Comprobante {
                 informacionGlobal = new InformacionGlobal();
                 informacionGlobal.setAnio(cfdiFormat.formatInt(informacionGlobalElement.getAttribute("Año")));
                 Periodicidad periodicidad = new Periodicidad();
-                periodicidad.setClavePeriodicidad(informacionGlobalElement.getAttribute(""));
+                periodicidad.setClavePeriodicidad(informacionGlobalElement.getAttribute("Periodicidad"));
                 informacionGlobal.setPeriodicidad(periodicidad);
                 Meses meses = new Meses();
-                meses.setClaveMeses(informacionGlobalElement.getAttribute(""));
+                meses.setClaveMeses(informacionGlobalElement.getAttribute("Meses"));
                 informacionGlobal.setMeses(meses);
             }
         }
@@ -120,15 +121,19 @@ public class Converter2Comprobante {
                 tipoRelacion.setClaveTiporelacion(cfdiRelacionadosElement.getAttribute("TipoRelacion"));
                 cfdiRelacionados.setTipoRelacion(tipoRelacion);
                 NodeList listCfdiRelacionado = cfdiRelacionadosElement.getElementsByTagName("cfdi:CfdiRelacionado");
+                List<CfdiRelacionado> crs = new ArrayList<>();
                 for (int k = 0; k < listCfdiRelacionado.getLength(); k++) {
                     Node conceptoCfdiRelacionado = listCfdiRelacionado.item(k);
                     //
                     if (conceptoCfdiRelacionado.getNodeType() == Node.ELEMENT_NODE) {
                         Element cfdiRelacionadoElement = (Element) conceptoCfdiRelacionado;
-                        //Conceptos                                        
-                        cfdiRelacionadoElement.getAttribute("UUID");
+                        //CfdiRelacionado
+                        CfdiRelacionado cr = new CfdiRelacionado();
+                        cr.setUuid(cfdiRelacionadoElement.getAttribute("UUID"));
+                        crs.add(cr);
                     }
                 }
+                cfdiRelacionados.setCfdiRelacionado(crs);
             }
         }
         return cfdiRelacionados;
@@ -228,8 +233,7 @@ public class Converter2Comprobante {
         }
         return conceptos;
     }
-    
-    
+
     private Impuestos getImpuestos(Element conceptoElement) throws ParseException {
         Impuestos impuestos = null;
         NodeList listImpuestos = conceptoElement.getElementsByTagName("cfdi:Impuestos");
@@ -248,7 +252,7 @@ public class Converter2Comprobante {
         }
         return impuestos;
     }
-    
+
     private Traslados getTraslados(Element impuestosElement) throws ParseException {
         Traslados traslados = null;
         NodeList listTraslado = impuestosElement.getElementsByTagName("cfdi:Traslado");
@@ -273,7 +277,7 @@ public class Converter2Comprobante {
         }
         return traslados;
     }
-    
+
     private Retenciones getRetenciones(Element impuestosElement) {
         Retenciones retenciones = null;
         NodeList listRetencion = impuestosElement.getElementsByTagName("cfdi:Retenciones");
@@ -352,8 +356,9 @@ public class Converter2Comprobante {
                 // datos informacion global
                 InformacionGlobal informacionGlobal = getInformacionGlobal(comprobanteElement);
                 comprobante.setInformacionGlobal(informacionGlobal);
-                // datos cfdi relacionados                        
-                getDatosRelacionados(comprobanteElement);
+                // datos cfdi relacionados
+                CfdiRelacionados cfdiRelacionados = getDatosRelacionados(comprobanteElement);
+                comprobante.setCfdiRelacionados(cfdiRelacionados);
                 // Datos del Emisor
                 Emisor emisor = getEmisor(comprobanteElement);
                 comprobante.setEmisor(emisor);
@@ -368,7 +373,7 @@ public class Converter2Comprobante {
                 Complemento complemento = new Complemento();
                 complemento.setTimbre(timbre);
                 // complemento nomina
-                
+
                 // addenda
                 getDatosAddenda(comprobanteElement);
             }

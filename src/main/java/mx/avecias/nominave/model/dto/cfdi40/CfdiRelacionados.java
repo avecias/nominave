@@ -4,8 +4,13 @@
  */
 package mx.avecias.nominave.model.dto.cfdi40;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
+import mx.avecias.nominave.model.dto.cfdi40.adapter.TipoRelacionAdapter;
 import mx.avecias.nominave.model.dto.cfdi40.cat.TipoRelacion;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -21,10 +26,20 @@ public class CfdiRelacionados implements Serializable {
     @TipoRelacion
     cfdi:CfdiRelacionado
      */
+    private int idCfdiRelacionados;
     private TipoRelacion tipoRelacion;
     private List<CfdiRelacionado> cfdiRelacionado;
 
     public CfdiRelacionados() {
+    }
+
+    @XmlTransient
+    public int getIdCfdiRelacionados() {
+        return idCfdiRelacionados;
+    }
+
+    public void setIdCfdiRelacionados(int idCfdiRelacionados) {
+        this.idCfdiRelacionados = idCfdiRelacionados;
     }
 
     /**
@@ -40,6 +55,8 @@ public class CfdiRelacionados implements Serializable {
      *
      * @return
      */
+    @XmlJavaTypeAdapter(TipoRelacionAdapter.class)
+    @XmlAttribute(name = "TipoRelacion", required = true)
     public TipoRelacion getTipoRelacion() {
         return tipoRelacion;
     }
@@ -77,6 +94,7 @@ public class CfdiRelacionados implements Serializable {
      *
      * @return
      */
+    @XmlElement(name = "CfdiRelacionado", required = true)
     public List<CfdiRelacionado> getCfdiRelacionado() {
         return cfdiRelacionado;
     }

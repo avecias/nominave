@@ -18,6 +18,9 @@ public class CfdiRelacionado implements Serializable {
     /*@UUID*/
     private String uuid;
 
+    public CfdiRelacionado() {
+    }
+
     public CfdiRelacionado(String uuid) {
         this.uuid = uuid;
     }
