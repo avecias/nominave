@@ -1112,26 +1112,50 @@ public class Comprobante implements Serializable {
         this.conceptos = conceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public Impuestos getImpuestos() {
         return impuestos;
     }
 
+    /**
+     *
+     * @param impuestos
+     */
     public void setImpuestos(Impuestos impuestos) {
         this.impuestos = impuestos;
     }
 
+    /**
+     *
+     * @return
+     */
     public Complemento getComplemento() {
         return complemento;
     }
 
+    /**
+     *
+     * @param complemento
+     */
     public void setComplemento(Complemento complemento) {
         this.complemento = complemento;
     }
 
+    /**
+     *
+     * @return
+     */
     public Addenda getAddenda() {
         return addenda;
     }
 
+    /**
+     *
+     * @param addenda
+     */
     public void setAddenda(Addenda addenda) {
         this.addenda = addenda;
     }
